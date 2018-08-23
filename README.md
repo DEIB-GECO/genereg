@@ -1,6 +1,6 @@
 # genexpreg_cancer
 
-
+[![Documentation Status](https://readthedocs.org/projects/genexpreg-cancer/badge/?version=latest)](https://genexpreg-cancer.readthedocs.io/en/latest/?badge=latest)
 
 This library provides a method for analyzing the regulation systems of target genes belonging to genomic pathways relevant for a specific TCGA cancer type. Adopting a linear regression approach, it builds a predictive model for the regulation of target genes expression, in order to identify the relevant features that explain the regulation of each gene of interest within patients affected by the tumor under analysis.
 The regulation system of each target gene is analyzed singularly and independently, by assessing the effect of some specific factors on its expression:
@@ -13,4 +13,4 @@ Thus, the matter is understanding the relationships between the activity of each
 This approach does not analyze all the existing correlation among target genes and their regulatory features, but it identifies those associations that more contributes to the target genes expression regulation.
 The results are focused by design to the **best-predicting sets of features**, leaving out potential regulators with important biological functions, but with an extremely low predictive power with respect to the expression of the target gene. 
 
-The full documentation can be found at the following link:
+The full documentation can be found at the following link: http://genexpreg-cancer.readthedocs.io
