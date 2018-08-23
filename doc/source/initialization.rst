@@ -23,7 +23,7 @@ Here is how this set of genes has to be structured:
 
 	* save this file as "*Genes_of_Interest.xlsx*" in the *library workspace*
 
-An example of this file, containing target genes belonging to three relevant pathways for the *Ovarian Serous Cystadenocarcinoma*, can be downloaded `here <https://github.com/Kia23/genexpreg-cancer/raw/master/DATA/sample_files/Genes_of_Interest.xlsx>`_.
+An example of this file, containing target genes belonging to three relevant pathways for the *Ovarian Serous Cystadenocarcinoma*, can be downloaded `here <https://github.com/Kia23/genexpreg_cancer/raw/master/DATA/sample_files/Genes_of_Interest.xlsx>`_.
 
 |
 

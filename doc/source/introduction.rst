@@ -1,6 +1,10 @@
 Introduction
 ============================================
 This library provides a method for analyzing the regulation systems of target genes belonging to genomic pathways relevant for a specific TCGA cancer type. Adopting a linear regression approach, it builds a predictive model for the regulation of target genes expression, in order to identify the relevant features that better explain the regulation of each gene of interest within patients affected by the tumor under analysis.
+Here is the list of tumors that can be analyzed using the method this library provides:
+
+.. image:: images/TCGATumors.png
+
 
 The regulation system of each target gene is analyzed singularly and independently, by assessing the effect of some specific factors on its expression:
 	
