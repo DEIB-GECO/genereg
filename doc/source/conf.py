@@ -24,12 +24,9 @@ copyright = '2018, Chiara Regondi'
 author = 'Chiara Regondi'
 
 # The short X.Y version
-
-with open(os.path.join(".", "genexpreg_cancer", "resources", "version"), "r") as f_ver:
-    version = f_ver.read().strip()
-	
+version = ''
 # The full version, including alpha/beta/rc tags
-release = version
+release = '0.0.5'
 
 
 # -- General configuration ---------------------------------------------------
