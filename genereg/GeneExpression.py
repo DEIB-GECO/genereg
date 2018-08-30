@@ -21,8 +21,8 @@ def extract_expression(tumor, platform, gencode_version):
 
 	Example::
 	
-		import genexpreg_cancer as gx
-		expr_interest_df, expr_regul_df = gx.GeneExpression.extract_expression(tumor='Ovarian Serous Cystadenocarcinoma', platform=27, gencode_version=22)
+		import genereg as gr
+		expr_interest_df, expr_regul_df = gr.GeneExpression.extract_expression(tumor='Ovarian Serous Cystadenocarcinoma', platform=27, gencode_version=22)
 	"""
 
 	
