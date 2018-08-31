@@ -26,6 +26,9 @@ def linear_regression(pathway, n_data_matrix):
 		gr.LinearRegression.linear_regression(pathway='DNA_REPAIR', n_data_matrix=5)		
 	"""
 
+	# Check input parameters	
+	if n_data_matrix not in [2, 3, 5]:
+		raise ValueError('Data Matrix ERROR! Possible values: {2,3,5}')
 
 	# Define the model to create
 	model = str(n_data_matrix)

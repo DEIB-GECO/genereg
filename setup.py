@@ -12,7 +12,7 @@ except ImportError:
 	
 setuptools.setup(
     name="genereg",
-    version="0.0.2",
+    version="0.0.4",
     author="Kia23",
     author_email="kia34.r18.dev@gmail.com",
     description="A library for analyzing the regulation systems of target genes belonging to genomic pathways relevant for a specific cancer type.",

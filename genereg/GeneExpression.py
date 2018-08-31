@@ -25,6 +25,17 @@ def extract_expression(tumor, platform, gencode_version):
 		expr_interest_df, expr_regul_df = gr.GeneExpression.extract_expression(tumor='Ovarian Serous Cystadenocarcinoma', platform=27, gencode_version=22)
 	"""
 
+	# Check input parameters
+	tcga_tumors = ["Acute Myeloid Leukemia","Adrenocortical Carcinoma","Bladder Urothelial Carcinoma","Brain Lower Grade Glioma" ,"Breast Invasive Carcinoma","Cervical Squamous Cell Carcinoma and Endocervical Adenocarcinoma","Cholangiocarcinoma","Colon Adenocarcinoma","Esophageal Carcinoma","Glioblastoma Multiforme","Head and Neck Squamous Cell Carcinoma","Kidney Chromophobe","Kidney Renal Clear Cell Carcinoma","Kidney Renal Papillary Cell Carcinoma","Liver Hepatocellular Carcinoma","Lung Adenocarcinoma","Lung Squamous Cell Carcinoma","Lymphoid Neoplasm Diffuse Large B-cell Lymphoma","Mesothelioma","Ovarian Serous Cystadenocarcinoma","Pancreatic Adenocarcinoma","Pheochromocytoma and Paraganglioma","Prostate Adenocarcinoma","Rectum Adenocarcinoma","Sarcoma","Skin Cutaneous Melanoma","Stomach Adenocarcinoma","Testicular Germ Cell Tumors","Thymoma","Thyroid Carcinoma","Uterine Carcinosarcoma","Uterine Corpus Endometrial Carcinoma","Uveal Melanoma"]
+	if tumor not in tcga_tumors:
+		raise ValueError('PATHOLOGY NOT SUPPORTED! You can analyze one of these 33 types of TCGA tumors: '+(', '.join(tcga_tumors)))
+	
+	if platform not in [27, 450]:
+		raise ValueError('PLATFORM NOT RECOGNIZED! Sequencing platforms available: 27 and 450')
+	
+	if gencode_version not in [22, 24, 27]:
+		raise ValueError('GRCh38 GENCODE versions available are 22, 24 and 27')
+	
 	
 	# Load the list of genes of interest
 	EntrezConversion_df = pd.read_excel('./Genes_of_Interest.xlsx',sheetname='Sheet1',header=0,converters={'GENE_SYMBOL':str,'ENTREZ_GENE_ID':str,'PATHWAY':str,'SubClass':str})

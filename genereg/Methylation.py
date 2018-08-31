@@ -32,6 +32,16 @@ def extract_methylation(tumor, platform, gencode_version, methyl_upstream, methy
 		methyl_df = gr.Methylation.extract_methylation(tumor='Ovarian Serous Cystadenocarcinoma', platform=27, gencode_version=22, methyl_upstream=4000, methyl_downstream=1000)
 	"""
 
+	# Check input parameters
+	tcga_tumors = ["Acute Myeloid Leukemia","Adrenocortical Carcinoma","Bladder Urothelial Carcinoma","Brain Lower Grade Glioma" ,"Breast Invasive Carcinoma","Cervical Squamous Cell Carcinoma and Endocervical Adenocarcinoma","Cholangiocarcinoma","Colon Adenocarcinoma","Esophageal Carcinoma","Glioblastoma Multiforme","Head and Neck Squamous Cell Carcinoma","Kidney Chromophobe","Kidney Renal Clear Cell Carcinoma","Kidney Renal Papillary Cell Carcinoma","Liver Hepatocellular Carcinoma","Lung Adenocarcinoma","Lung Squamous Cell Carcinoma","Lymphoid Neoplasm Diffuse Large B-cell Lymphoma","Mesothelioma","Ovarian Serous Cystadenocarcinoma","Pancreatic Adenocarcinoma","Pheochromocytoma and Paraganglioma","Prostate Adenocarcinoma","Rectum Adenocarcinoma","Sarcoma","Skin Cutaneous Melanoma","Stomach Adenocarcinoma","Testicular Germ Cell Tumors","Thymoma","Thyroid Carcinoma","Uterine Carcinosarcoma","Uterine Corpus Endometrial Carcinoma","Uveal Melanoma"]
+	if tumor not in tcga_tumors:
+		raise ValueError('PATHOLOGY NOT SUPPORTED! You can analyze one of these 33 types of TCGA tumors: '+(', '.join(tcga_tumors)))
+	
+	if platform not in [27, 450]:
+		raise ValueError('PLATFORM NOT RECOGNIZED! Sequencing platforms available: 27 and 450')
+	
+	if gencode_version not in [22, 24, 27]:
+		raise ValueError('GRCh38 GENCODE versions available are 22, 24 and 27')
 
 	# Execute the query for the extraction of methylation values on the remote server, using the PyGMQL Python library
 	gl.set_remote_address('http://gmql.eu/gmql-rest/')
