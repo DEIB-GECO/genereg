@@ -1,0 +1,13 @@
+Gene - TFs Mapping
+============================================
+As comprehensive information on human genes is available online through multiple heterogeneous sources, it is useful to have it integrated into a unique spreadsheet to be queried whenever required during the data extraction, manipulation and analysis processes.
+
+
+..  automodule:: GenesMapping
+    :members:
+
+
+Here it is a sample excerpt of the final GENEs-TFs mapping table:
+
+
+.. image:: images/mappingtable.png
