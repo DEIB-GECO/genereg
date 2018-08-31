@@ -25,7 +25,7 @@ This because the methylated promoter mostly influences the gene expression regul
 
 Here is a sample excerpt of the final methylation values table, containing TCGA data samples as rows and target genes as columns:
 
-.. image:: images/methylval.png
+.. image:: images/methyltab.png
 
 |
 

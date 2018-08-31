@@ -10,4 +10,4 @@ As comprehensive information on human genes is available online through multiple
 Here is a sample excerpt of the final GENEs-TFs mapping table:
 
 
-.. image:: images/MappingTable.png
+.. image:: images/mappingtable.png
