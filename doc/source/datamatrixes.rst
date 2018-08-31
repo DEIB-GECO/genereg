@@ -21,5 +21,5 @@ An additive approach is adopted, building five different data matrixes for each 
 
 Here it is the set of fuctions used to build the five data matrixes:
 
-..  automodule:: DataMatrixes
+..  automodule:: genereg.DataMatrixes
     :members:

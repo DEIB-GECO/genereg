@@ -23,7 +23,7 @@ Here it is how this set of genes has to be structured:
 
 	* save this file as "*Genes_of_Interest.xlsx*" in the *library workspace*
 
-An example of this file, containing target genes belonging to three relevant pathways for the *Ovarian Serous Cystadenocarcinoma*, can be downloaded `here <https://github.com/Kia23/genexpreg_cancer/raw/master/DATA/sample_files/Genes_of_Interest.xlsx>`_.
+An example of this file, containing target genes belonging to three relevant pathways for the *Ovarian Serous Cystadenocarcinoma*, can be downloaded `here <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/Genes_of_Interest.xlsx>`_.
 
 |
 
@@ -32,7 +32,7 @@ Library Initialization
 -----------------------
 You have to execute the following function in order to initialize the library and to correctly set all the initial library settings:
 
-..  automodule:: Initialize
+..  automodule:: genereg.Initialize
     :members:
 
 This function builds the complete directory tree for storing files and results in the *library workspace*, it downloads and saves the complete lists of Transcription Factors (from both UniProt and ENCODE) and human genes (from HGNC) to be used for the **Gene - TFs Mapping** phase, and it creates some useful soon-to-be-used files, starting from the "*Genes_of_Interest.xlsx*" table.

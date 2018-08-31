@@ -1,7 +1,7 @@
 Introduction
 ============================================
 This library implements a method for analyzing the regulation systems of target genes belonging to genomic pathways relevant for a specific cancer type. Adopting a linear regression approach, it builds a predictive model for the regulation of target genes expression, in order to identify the relevant features that better explain the regulation of each gene of interest within patients affected by the tumor under analysis.
-Here is the list of tumors that can be analyzed using the method this library provides:
+Here it is the list of tumors that can be analyzed using the method this library provides:
 
 .. image:: images/TCGATumors.png
 
@@ -20,7 +20,7 @@ So, this method allows to analyze the beavior of specific human genes within can
 
 The matter is understanding the relationships between the activity of each target gene and the genes belonging either to the same pathway or to the other relevant pathways, and the relationships between all such target genes and their candidate regulatory genes: this may lead to identify potential common regulators along each pathway, or frequent regulators with a key role in the regulation systems of genes of interest, eventually predicting their potential oncogenic role. Whenever a correlation exists, an assessment of the potential influence that the gene methylation may have on its expression is also made.
 
-Analyzing all the features is usually extremely heavy from a computational standpoint, resulting in a extremely high computational complexity. For this reason, in order to make this analysis sustainable in reasonable time and using standard computational resources, the method implemented in this library has been developed.
+Analyzing all the features is usually extremely heavy from a computational standpoint, resulting in a high computational complexity. For this reason, in order to make this analysis sustainable within reasonable time and using standard computational resources, the method implemented in this library has been developed.
 This approach does not analyze all the existing correlations among target genes and their regulatory features, but it identifies those associations that best contribute to the target genes expression regulation.
 The results are focused by design to the **best-predicting sets of features**, leaving out potential regulators with important biological functions, but with an extremely low predictive power with respect to the expression of the target gene.
 
@@ -32,7 +32,7 @@ The main phases that are performed during the complete execution of this method 
 	
 	3) extraction of the promotorial methylation sites and of their methylation levels (i.e. *beta_values*) for each target gene (from TCGA data samples collecting information on patients affected by the tumor of interest);
 	
-	4) extraction of the expression values (measured in *fpkm*) of each target gene (from the same TCGA data samples collecting information on patients affected by the tumor of interest);
+	4) extraction of the expression values of each target gene (from the same TCGA data samples collecting information on patients affected by the tumor of interest);
 	
 	5) extracted data manipulation and storage into data matrixes to use as inputs for the data analysis;
 	
@@ -42,7 +42,7 @@ The next chapters of the documentation deeply explain the rationale behind each 
 
 |
 
-Here is a sample Python script for using the library::
+Here it is a sample Python script for using the library::
 
 	import genereg as gr
 	
