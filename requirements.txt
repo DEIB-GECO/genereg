@@ -1,0 +1,13 @@
+gmql
+pandas
+numpy
+openpyxl
+math
+pickle
+xlsxwriter
+collections
+sklearn
+statsmodels
+os
+urllib
+mlxtend
