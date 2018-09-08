@@ -6,7 +6,6 @@ import pandas as pd
 from pandas import ExcelWriter
 import pickle
 import xlsxwriter
-import os
 
 
 def extract_tfs(cell_lines, gencode_version):

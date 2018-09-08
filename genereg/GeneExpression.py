@@ -6,7 +6,6 @@ import pandas as pd
 from pandas import ExcelWriter
 import pickle
 import collections
-import os
 
 
 def extract_expression(tumor, platform, gencode_version):

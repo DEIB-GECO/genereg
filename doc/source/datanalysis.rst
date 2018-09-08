@@ -29,15 +29,15 @@ However, since it is possible to introduce an alteration in the results due to t
 
 The set of fuctions used to perform the analysis is the following:
 
-..  automodule:: FeatureSelection
+..  automodule:: genereg.FeatureSelection
     :members:
 
 	
-..  automodule:: LinearRegression
+..  automodule:: genereg.LinearRegression
     :members:
 
 	
-..  automodule:: SummaryResults
+..  automodule:: genereg.SummaryResults
     :members:
 
 	

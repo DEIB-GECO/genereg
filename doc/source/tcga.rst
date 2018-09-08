@@ -13,7 +13,7 @@ Only common data samples having both methylation and expression values in TCGA a
 Extraction of Methylation values
 -------------------------------------
 
-..  automodule:: Methylation
+..  automodule:: genereg.Methylation
     :members:
 
 |
@@ -34,6 +34,6 @@ Here is a sample excerpt of the final methylation values table, containing TCGA 
 Extraction of Gene Expression values
 -------------------------------------
 
-..  automodule:: GeneExpression
+..  automodule:: genereg.GeneExpression
     :members:
 

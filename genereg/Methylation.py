@@ -11,7 +11,6 @@ import xlsxwriter
 import collections
 from collections import defaultdict
 from sklearn.utils import shuffle
-import os
 
 
 def extract_methylation(tumor, platform, gencode_version, methyl_upstream, methyl_downstream):

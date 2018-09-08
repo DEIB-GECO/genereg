@@ -14,7 +14,7 @@ system.
 Extraction of Transcription Factors
 -------------------------------------
 
-..  automodule:: TranscriptionFactors
+..  automodule:: genereg.TranscriptionFactors
     :members:
 
 |
@@ -23,7 +23,7 @@ Extraction of Transcription Factors
 Identification of Regulatory Genes
 -------------------------------------
 
-..  automodule:: RegulatoryGenes
+..  automodule:: genereg.RegulatoryGenes
     :members:
 
 The following image explains the extraction process for each target gene works and how its TFs and regulatory genes are identified:
