@@ -23,7 +23,7 @@ class Mock(MagicMock):
     def __getattr__(cls, name):
         return MagicMock()
 
-MOCK_MODULES = ['pandas', 'numpy', 'openpyxl', 'math', 'pickle', 'xlsxwriter', 'collections', 'sklearn', 'statsmodels', 'os', 'urllib', 'mlxtend']
+MOCK_MODULES = ['pandas', 'numpy']
 sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
 
 
