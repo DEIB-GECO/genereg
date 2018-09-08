@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="genereg",
-    version="0.0.5",
+    version="0.0.6",
     author="Kia23",
     author_email="kia34.r18.dev@gmail.com",
     description="A library for analyzing the regulation systems of target genes belonging to genomic pathways relevant for a specific cancer type.",
@@ -13,7 +13,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/Kia23/genereg",
     packages=setuptools.find_packages(),
-    install_requires=['gmql', 'pandas', 'numpy', 'openpyxl', 'pickle', 'math', 'xlsxwriter',
+    install_requires=['gmql', 'pandas', 'numpy', 'openpyxl', 'math', 'xlsxwriter',
 	                  'collections', 'sklearn', 'statsmodels', 'os', 'urllib', 'mlxtend'
 					  ],
     classifiers=["Programming Language :: Python :: 3",
