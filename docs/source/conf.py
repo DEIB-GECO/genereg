@@ -23,7 +23,7 @@ class Mock(MagicMock):
     def __getattr__(cls, name):
         return MagicMock()
 
-MOCK_MODULES = ['pandas', 'numpy',  'sklearn', 'sklearn.utils', 'sklearn.linear_model', 'statsmodels.api', 'urllib.request' ]
+MOCK_MODULES = ['pandas', 'numpy',  'sklearn', 'sklearn.utils', 'sklearn.linear_model', 'statsmodels.api', 'urllib.request', 'xlsxwriter', 'pickle', 'math', 'mlxtend.feature_selection', 'collections']
 sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
 
 
