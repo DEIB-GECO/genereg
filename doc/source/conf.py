@@ -16,12 +16,6 @@ import os
 import sys
 sys.path.insert(0, os.path.abspath('../..'))
 
-import mock
-
-MOCK_MODULES = ['gmql', 'pandas', 'numpy', 'openpyxl', 'math', 'pickle', 'xlsxwriter','collections', 'sklearn', 'statsmodels', 'os', 'urllib', 'mlxtend']
-for mod_name in MOCK_MODULES:
-    sys.modules[mod_name] = mock.Mock()
-
 
 # -- Project information -----------------------------------------------------
 
