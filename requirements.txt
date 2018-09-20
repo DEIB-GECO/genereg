@@ -1,7 +1,6 @@
 pandas
 numpy
 openpyxl
-math
 xlsxwriter
 collections
 sklearn
