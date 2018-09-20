@@ -4,5 +4,4 @@ openpyxl
 xlsxwriter
 sklearn
 statsmodels
-urllib
 mlxtend
