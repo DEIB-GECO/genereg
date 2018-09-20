@@ -1,7 +1,0 @@
-pandas
-numpy
-openpyxl
-xlsxwriter
-sklearn
-statsmodels
-mlxtend
