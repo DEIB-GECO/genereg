@@ -24,7 +24,7 @@ Here it is an example of extraction: in this case the methylation sites of inter
 
 This interval can be useful, for example, for assessing the impact of a methylated promoter on the target gene, which participates in considerably reducing the gene expression.
 
-Here is a sample excerpt of the final methylation values table, containing TCGA data samples as rows and target genes as columns:
+Here it is a sample excerpt of the final methylation values table, containing TCGA data samples as rows and target genes as columns:
 
 .. image:: images/methyltab.png
 

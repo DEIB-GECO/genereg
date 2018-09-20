@@ -101,20 +101,9 @@ def extract_tfs(cell_lines, gencode_version):
 
 
 	# Load the list of genes of interest
-	EntrezConversion_df = pd.read_excel('./Genes_of_Interest.xlsx',sheetname='Sheet1',header=0,converters={'GENE_SYMBOL':str,'ENTREZ_GENE_ID':str,'PATHWAY':str,'SubClass':str})
+	EntrezConversion_df = pd.read_excel('./Genes_of_Interest.xlsx',sheetname='Sheet1',header=0,converters={'GENE_SYMBOL':str,'ENTREZ_GENE_ID':str,'GENE_SET':str})
 	
-	# Convert the 'SubClass' attribute into a list
-	for index, row in EntrezConversion_df.iterrows():
-		subclasses = row['SubClass']
-		if isinstance(subclasses,str):
-			subclasses_list = subclasses.split(', ')
-		else:
-			s = ''	
-			subclasses_list = s.split(', ')
-			subclasses_list.remove('')
-		EntrezConversion_df.set_value(index,'SubClass',subclasses_list)
-	
-	# Create a list with the Gene Symbols of the genes of interest in the pathways
+	# Create a list with the Gene Symbols of the genes of interest
 	Symbols = []
 	for index, row in EntrezConversion_df.iterrows():
 		i = row['GENE_SYMBOL']
@@ -152,12 +141,12 @@ def extract_tfs(cell_lines, gencode_version):
 		dict_GeneTF[k] = sorted_TFs
 
 
-	# For each gene, add to the dictionary its ENTREZ_GENE_ID and the PATHWAYS it belongs to.
+	# For each gene, add to the dictionary its ENTREZ_GENE_ID and the GENE_SET it belongs to.
 	# These are added as two lists at the end of the value list of each key (i.e. gene): clearly the list containing
-	# the ENTREZ_GENE_ID will always have one string element for each key, while the list containing the PATHWAYS
-	# can have one or more elements, depending on the number of pathways the corresponding gene belongs to.
+	# the ENTREZ_GENE_ID will always have one string element for each key, while the list containing the gene sets
+	# can have one or more elements, depending on the number of sets the corresponding gene belongs to.
 
-	# Get distinct Gene Symbols of genes of interest (considering only once the genes that belongs to multiple pathways)
+	# Get distinct Gene Symbols of genes of interest (considering only once the genes that belongs to multiple sets)
 	Symbols_distinct = []
 	for value in Symbols:
 		if value not in Symbols_distinct:
@@ -165,20 +154,20 @@ def extract_tfs(cell_lines, gencode_version):
 
 	for value in Symbols_distinct:
 		row = EntrezConversion_df.loc[EntrezConversion_df['GENE_SYMBOL'] == value]
-		# get the ENTREZ_GENE_ID (in case of gene belonging to multiple pathways this list will contain
-		# its ENTREZ_GENE_ID as many times as the number of pathways it belongs to)
+		# get the ENTREZ_GENE_ID (in case of gene belonging to multiple sets this list will contain
+		# its ENTREZ_GENE_ID as many times as the number of sets it belongs to)
 		row_entrez_id = list(row.ENTREZ_GENE_ID) 
 		N_eid = len(row_entrez_id)
 		if N_eid > 1:
 			entrez_id = list(list(row_entrez_id[:N_eid-1])) # consider the ENTREZ_GENE_ID only once
 		else: entrez_id = list(row_entrez_id)    
-		pathways = list(list(row.PATHWAY)) # get the PATHWAYS
-		# add the ENTREZ_GENE_ID and the PATHWAYS as elements in the list of values corresponding to the proper gene
+		sets = list(list(row.GENE_SET))
+		# add the ENTREZ_GENE_ID and the GENE_SET as elements in the list of values corresponding to the proper gene
 		dict_GeneTF[value].append(entrez_id)
-		dict_GeneTF[value].append(pathways)   
+		dict_GeneTF[value].append(sets)   
 
 	# So, the general form of this dictionary containing the information we need is the following:
-	# dict_GeneTF = {key: value, ...} = {GENE_SYMBOL: [TF1, TF2, TF3, ..., [ENTREZ_GENE_ID], [PATHWAYS]]}
+	# dict_GeneTF = {key: value, ...} = {GENE_SYMBOL: [TF1, TF2, TF3, ..., [ENTREZ_GENE_ID], [GENE_SETs]]}
 
 	
 	# Store the number of TFs for each gene of interest in a new dictionary
@@ -205,7 +194,7 @@ def extract_tfs(cell_lines, gencode_version):
 	TFs_gene_df = TFs_gene_unsorted_df.sort_values(by='#TFs', ascending=0)
 
 	# Add to the dataframe a column for storing also the Entrez Gene ID of each gene besides the already present Gene Symbols
-	TFs_gene_df.insert(1, 'ENTREZ_GENE_ID',['']*176)
+	TFs_gene_df['ENTREZ_GENE_ID'] = ''
 
 	# Add the correct Entrez Gene ID for each gene
 	for index, row in TFs_gene_df.iterrows():
@@ -218,7 +207,7 @@ def extract_tfs(cell_lines, gencode_version):
 	TFs_gene_df.to_excel(writer,'Sheet1',index=False)
 	writer.save()
 
-	# Export the dictionary of genes of interest and their TFs, ENTREZ GENE ID and PATHWAYS
+	# Export the dictionary of genes of interest and their TFs, ENTREZ GENE ID and GENE_SETs
 	# Save the dictionary into a pickle file
 	pickle.dump(dict_GeneTF, open('./1_Transcription_Factors/dict_GeneTF.p', 'wb'))
 	 
@@ -239,8 +228,8 @@ def extract_tfs(cell_lines, gencode_version):
 			worksheet.write(row, col + 1, ''.join(item))
 			if item == dict_GeneTF[key][-2]: # the second to last element is the Entrez Gene ID
 				worksheet.write(row, col + 2, 'Entrez Gene ID')
-			if item == dict_GeneTF[key][-1]: # the last element is the list of pathways
-				worksheet.write(row, col + 2, 'Pathways')
+			if item == dict_GeneTF[key][-1]: # the last element is the list of gene sets
+				worksheet.write(row, col + 2, 'Gene Set')
 			row += 1
 	workbook.close()
 

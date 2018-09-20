@@ -1,0 +1,11 @@
+pandas
+numpy
+openpyxl
+math
+xlsxwriter
+collections
+sklearn
+statsmodels
+os
+urllib
+mlxtend

@@ -58,74 +58,49 @@ def library_init():
 
 
 	# Load the list of genes of interest
-	EntrezConversion_df = pd.read_excel('./Genes_of_Interest.xlsx',sheetname='Sheet1',header=0,converters={'GENE_SYMBOL':str,'ENTREZ_GENE_ID':str,'PATHWAY':str,'SubClass':str})
-	
-	# Convert the 'SubClass' attribute into a list
-	for index, row in EntrezConversion_df.iterrows():
-		subclasses = row['SubClass']
-		if isinstance(subclasses,str):
-			subclasses_list = subclasses.split(', ')
-		else:
-			s = ''	
-			subclasses_list = s.split(', ')
-			subclasses_list.remove('')
-		EntrezConversion_df.set_value(index,'SubClass',subclasses_list)
+	EntrezConversion_df = pd.read_excel('./Genes_of_Interest.xlsx',sheetname='Sheet1',header=0,converters={'GENE_SYMBOL':str,'ENTREZ_GENE_ID':str,'GENE_SET':str})
 
-	# Save the list of genomic pathways of interest
-	genomic_pathways = (EntrezConversion_df.PATHWAY.unique()).tolist()
-	with open ('./Pathways_of_Interest.txt', 'w') as fp:
-		for i in genomic_pathways:
+	# Save the list of gene sets of interest
+	gene_sets = (EntrezConversion_df.GENE_SET.unique()).tolist()
+	with open ('./Gene_Sets.txt', 'w') as fp:
+		for i in gene_sets:
 			fp.write("%s\n" % i)
 		
-	# Create a dictionary setting the different genomic pathways of interest as keys and the list of genes of interest belonging to eahc of them as values
+	# Create a dictionary setting the different gene sets of interest as keys and the list of genes of interest belonging to each of them as values
 	from collections import defaultdict
-	dict_pathways = defaultdict(list)
+	dict_gene_sets = defaultdict(list)
 		
-	for p in genomic_pathways:
-		dict_pathways[p] = []
+	for s in gene_sets:
+		dict_gene_sets[s] = []
 		
 	for i, r in EntrezConversion_df.iterrows():
 		n = r['GENE_SYMBOL']
-		p = r['PATHWAY']
-		dict_pathways[p].append(n)		
+		s = r['GENE_SET']
+		dict_gene_sets[s].append(n)
 		
 	# Export the dictionary
-	pickle.dump(dict_pathways, open('./dict_pathways.p', 'wb'))
+	pickle.dump(dict_gene_sets, open('./dict_gene_sets.p', 'wb'))
 
-	# Save the list of functional subclasses for each pathway of interest
-	for p in genomic_pathways:
-		current_pathway_subclasses = []
-		for i, r in EntrezConversion_df.iterrows():
-			pathway = r['PATHWAY']
-			subclasses = r['SubClass']
-			if pathway == p:
-				for s in subclasses:
-					if s not in current_pathway_subclasses:
-						current_pathway_subclasses.append(s)
-		with open ('./'+p+'_SubClasses.txt', 'w') as fp:
-			for i in current_pathway_subclasses:
-				fp.write('%s\n' % i)
-				
 				
 	# Build the directories tree for storing data analysis results
-	pathway_file = open('./Pathways_of_Interest.txt', 'r')
-	pathways = pathway_file.read().split('\n')
-	pathways.remove('')
-	pathway_file.close()
+	gene_sets_file = open('./Gene_Sets.txt', 'r')
+	sets = gene_sets_file.read().split('\n')
+	sets.remove('')
+	gene_sets_file.close()
 
-	pathway_dirs = []
-	for p in pathways:
-		elem = './5_Data_Analysis/'+p
-		pathway_dirs.append(elem)
-	for d in pathway_dirs:
+	gene_sets_dirs = []
+	for s in sets:
+		elem = './5_Data_Analysis/'+s
+		gene_sets_dirs.append(elem)
+	for d in gene_sets_dirs:
 		if not os.path.exists(d):
 			os.makedirs(d)
 
 	analysis_names = ['FeatureSelection','LinearRegression']
-	for p in pathways:
+	for s in sets:
 		analysis_dirs = []
-		elem_1 = './5_Data_Analysis/'+p+'/FeatureSelection'
-		elem_2 = './5_Data_Analysis/'+p+'/LinearRegression'
+		elem_1 = './5_Data_Analysis/'+s+'/FeatureSelection'
+		elem_2 = './5_Data_Analysis/'+s+'/LinearRegression'
 		analysis_dirs.append(elem_1)
 		analysis_dirs.append(elem_2)
 		for a in analysis_dirs:
@@ -133,12 +108,12 @@ def library_init():
 				os.makedirs(a)
 
 	model_names = ['M2','M3','M5']
-	for p in pathways:
+	for s in sets:
 		for n in analysis_names:
 			models_dirs = []
-			elem_1 = './5_Data_Analysis/'+p+'/'+n+'/M2'
-			elem_2 = './5_Data_Analysis/'+p+'/'+n+'/M3'
-			elem_3 = './5_Data_Analysis/'+p+'/'+n+'/M5'
+			elem_1 = './5_Data_Analysis/'+s+'/'+n+'/M2'
+			elem_2 = './5_Data_Analysis/'+s+'/'+n+'/M3'
+			elem_3 = './5_Data_Analysis/'+s+'/'+n+'/M5'
 			models_dirs.append(elem_1)
 			models_dirs.append(elem_2)
 			models_dirs.append(elem_3)
@@ -146,12 +121,12 @@ def library_init():
 				if not os.path.exists(m):
 					os.makedirs(m)			
 
-	for p in pathways:
+	for s in sets:
 		for model in model_names:
 			additional_dirs = []
-			elem_1 = './5_Data_Analysis/'+p+'/LinearRegression/'+model+'/Coefficients'
-			elem_2 = './5_Data_Analysis/'+p+'/LinearRegression/'+model+'/Confidence Intervals'
-			elem_3 = './5_Data_Analysis/'+p+'/LinearRegression/'+model+'/Correlation Matrix'
+			elem_1 = './5_Data_Analysis/'+s+'/LinearRegression/'+model+'/Coefficients'
+			elem_2 = './5_Data_Analysis/'+s+'/LinearRegression/'+model+'/Confidence Intervals'
+			elem_3 = './5_Data_Analysis/'+s+'/LinearRegression/'+model+'/Correlation Matrix'
 			additional_dirs.append(elem_1)
 			additional_dirs.append(elem_2)
 			additional_dirs.append(elem_3)

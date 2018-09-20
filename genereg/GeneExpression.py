@@ -37,20 +37,9 @@ def extract_expression(tumor, platform, gencode_version):
 	
 	
 	# Load the list of genes of interest
-	EntrezConversion_df = pd.read_excel('./Genes_of_Interest.xlsx',sheetname='Sheet1',header=0,converters={'GENE_SYMBOL':str,'ENTREZ_GENE_ID':str,'PATHWAY':str,'SubClass':str})
+	EntrezConversion_df = pd.read_excel('./Genes_of_Interest.xlsx',sheetname='Sheet1',header=0,converters={'GENE_SYMBOL':str,'ENTREZ_GENE_ID':str,'GENE_SET':str})
 	
-	# Convert the 'SubClass' attribute into a list
-	for index, row in EntrezConversion_df.iterrows():
-		subclasses = row['SubClass']
-		if isinstance(subclasses,str):
-			subclasses_list = subclasses.split(', ')
-		else:
-			s = ''	
-			subclasses_list = s.split(', ')
-			subclasses_list.remove('')
-		EntrezConversion_df.set_value(index,'SubClass',subclasses_list)
-	
-	# Create a list containing the Gene Symbols of the genes of interest in the pathways
+	# Create a list containing the Gene Symbols of the genes of interest
 	genesSYM_of_interest = []
 	for i, r in EntrezConversion_df.iterrows():
 		sym = r['GENE_SYMBOL']
@@ -63,7 +52,7 @@ def extract_expression(tumor, platform, gencode_version):
 	# Import the gene-TFs mapping dataframe 
 	Mapping_df = pd.read_excel('./0_Genes_Mapping/Genes Mapping.xlsx',sheetname='Sheet1',header=0,converters={'ENTREZ_GENE_ID':str,'HGNC_ID':str})
 
-	# Create a list containing the Gene Symbols of the regulatory genes of genes of interest in the pathways
+	# Create a list containing the Gene Symbols of the regulatory genes of genes of interest
 	regulatory_genesSYM = []
 	for key, value in dict_RegulGenes.items():
 		for gene in value:  
@@ -195,7 +184,7 @@ def extract_expression(tumor, platform, gencode_version):
 	expr_df_regs_regulatory = expr_df_regs.loc[expr_df_regs['gene_symbol'].isin(regulatory_genesSYM)].copy()
 
 
-	# Gene expression values for each gene of interest in the pathways:
+	# Gene expression values for each gene of interest:
 
 	# Create a dictionary for storing all the gene expression values for each gene of interest and for each aliquot TCGA
 	from collections import defaultdict

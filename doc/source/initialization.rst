@@ -7,23 +7,21 @@ For this reason, it is advised to execute Python direclty within the directory y
 ------------------
 Genes of Interest
 ------------------
-The first thing you need to do is defining your set of genes of interest for the cancer type you want to analyze: these are the target genes whose regulation systems will be assesed during the analysis.
+The first thing you need to do is defining your genes of interest for the pathology you want to analyze: these are the target genes whose regulation systems will be assesed during the analysis. Genes belonging to one or multiple gene sets are supported. So, you can analyze genes from different gene sets of your interest, by simply specifying the name of each set, as explained below.
 
-Here it is how this set of genes has to be structured:
+Here it is how this list of genes has to be structured:
     
-	* create an Excel file (.xlsx) with 4 columns ('GENE_SYMBOL', 'ENTREZ_GENE_ID', 'PATHWAY', 'SubClass') and one row for each target gene
+	* create an Excel file (.xlsx) with 3 columns ('GENE_SYMBOL', 'ENTREZ_GENE_ID', 'GENE_SET') and one row for each target gene
 	
 		* GENE_SYMBOL is the official gene name
 
 		* ENTREZ_GENE_ID is the numerical ID associated with the gene
 
-		* PATHWAY is the genomic pathway the gene belongs to, usually defined according to the functions the gene is involved in
-
-		* SubClass is the list of the functional classes the gene is assigned to within its own genomic pathway, defined according to the specific functions the gene participates in within its own patwhay
+		* GENE_SET is the name of the gene set the corresponding gene belongs to 
 
 	* save this file as "*Genes_of_Interest.xlsx*" in the *library workspace*
 
-An example of this file, containing target genes belonging to three relevant pathways for the *Ovarian Serous Cystadenocarcinoma*, can be downloaded `here <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/Genes_of_Interest.xlsx>`_.
+An example of this file can be downloaded `here <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/Genes_of_Interest.xlsx>`_. In this case, three different gene sets are analyzed, representing three genomic pathways relevant for the *Ovarian Serous Cystadenocarcinoma*. Each target gene belongs to a specific pathway according to the biological functions it is involved in.
 
 |
 

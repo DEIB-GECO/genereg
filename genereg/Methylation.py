@@ -7,7 +7,6 @@ from pandas import ExcelWriter
 import pickle
 import numpy as np
 import math
-import xlsxwriter
 import collections
 from collections import defaultdict
 from sklearn.utils import shuffle
@@ -16,7 +15,7 @@ from sklearn.utils import shuffle
 def extract_methylation(tumor, platform, gencode_version, methyl_upstream, methyl_downstream):
 
 	"""
-	The EXTRACT_METHYLATION operation extracts methylation values from TCGA for all the genes of interest. For each gene of interest, the mean value of all the beta_values associated to methylation sites that are localized within areas -methyl_upstream/+methyl_downstream bases from its TSSs is retrieved. Intermediate results files are exported locally during the execution of the function, while the final dataframe is returned as a Pandas dataframe and exported locally in the Excel file 'Methylation Values.xlsx'.
+	The EXTRACT_METHYLATION operation extracts methylation values from TCGA for all the genes of interest. For each gene of interest, the mean value of all the beta_values associated to methylation sites that are localized within areas -methyl_upstream/+methyl_downstream bases from its TSSs are retrieved. Intermediate results files are exported locally during the execution of the function, while the final dataframe is returned as a Pandas dataframe and exported locally in the Excel file 'Methylation Values.xlsx'.
 
 	:param tumor: full name of the tumor of interest, encoded as a string (e.g. 'Ovarian Serous Cystadenocarcinoma', 'Breast Invasive Carcinoma', ...)
 	:param platform: number identifying the sequencing platform (either 27 for the 27k probes sequencing platform or 450 for the 450k probes sequencing platform)
@@ -106,20 +105,9 @@ def extract_methylation(tumor, platform, gencode_version, methyl_upstream, methy
 			methyl_sample_barcodes.append(barcode)
 
 	# Load the list of genes of interest
-	EntrezConversion_df = pd.read_excel('./Genes_of_Interest.xlsx',sheetname='Sheet1',header=0,converters={'GENE_SYMBOL':str,'ENTREZ_GENE_ID':str,'PATHWAY':str,'SubClass':str})
-	
-	# Convert the 'SubClass' attribute into a list
-	for index, row in EntrezConversion_df.iterrows():
-		subclasses = row['SubClass']
-		if isinstance(subclasses,str):
-			subclasses_list = subclasses.split(', ')
-		else:
-			s = ''	
-			subclasses_list = s.split(', ')
-			subclasses_list.remove('')
-		EntrezConversion_df.set_value(index,'SubClass',subclasses_list)
+	EntrezConversion_df = pd.read_excel('./Genes_of_Interest.xlsx',sheetname='Sheet1',header=0,converters={'GENE_SYMBOL':str,'ENTREZ_GENE_ID':str,'GENE_SET':str})
 
-	# Create a list containing the Gene Symbols of the genes of interest in the pathways
+	# Create a list containing the Gene Symbols of the genes of interest
 	genesSYM_of_interest = []
 	for i, r in EntrezConversion_df.iterrows():
 		name = r['GENE_SYMBOL']

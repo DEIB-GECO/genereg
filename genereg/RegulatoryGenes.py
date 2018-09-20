@@ -21,7 +21,7 @@ def extract_regulatory_genes():
 	"""
 
 
-	# Starting from the dictionary containing for each gene of interest the TFs that bind to its promoters (along with the ENTREZ_GENE_ID and the PATHWAYS it belongs to)
+	# Starting from the dictionary containing for each gene of interest the TFs that bind to its promoters,
 	# extract the names of the genes encoding the TFs in order to identify the candidate regulatory genes of each gene of interest
 	dict_GeneTF = pickle.load(open('./1_Transcription_Factors/dict_GeneTF.p', 'rb'))
 	TFs_interest = []
@@ -135,7 +135,7 @@ def extract_regulatory_genes():
 	index = pd.MultiIndex.from_tuples(tuples, names=['GENE_SYMBOL', '#'])
 
 	# Create the dataframe and initialize the empty cells as empty strings
-	info_genes_of_interest = pd.DataFrame('', index = index, columns = ['Transcription Factors','Regulatory Genes','Entrez_Gene_IDs','ENTREZ_GENE_ID','PATHWAYS','#TFs','#RegulatoryGenes (distinct)']) 
+	info_genes_of_interest = pd.DataFrame('', index = index, columns = ['Transcription Factors','Regulatory Genes','Entrez_Gene_IDs','ENTREZ_GENE_ID','GENE_SET','#TFs','#RegulatoryGenes (distinct)']) 
 
 	# Set the correct Entrez Gene ID for each gene of interest
 	for index, row in info_genes_of_interest.iterrows():
@@ -145,19 +145,22 @@ def extract_regulatory_genes():
 			eid = Mapping_df.loc[Mapping_df['GENE_SYMBOL'] == sym, 'ENTREZ_GENE_ID'].iloc[0]
 			info_genes_of_interest.loc[(sym, n),'ENTREZ_GENE_ID'] = eid
 			
-	# Set the pathways
+	# Set the gene sets
 	for key, value in dict_GeneTF.items():
-		# get the list of pathways associated to gene 'key'
+		# get the list of gene sets associated to gene 'key'
 		# (i.e. the last element of the list related to gene 'key')
-		pathways = value[-1]
-		# set the list of pathways to the correct cell in the dataframe (in correspondence of index 'key')
-		# (we know that our genes all have one pathway, maximum two)
-		n_path = len(pathways)
+		sets = value[-1]
+		# set the list of gene sets to the correct cell in the dataframe (in correspondence of index 'key')
+		n_path = len(sets)
 		if n_path == 1:
-			info_genes_of_interest.loc[(key, 1),'PATHWAYS'] = pathways[0]
+			info_genes_of_interest.loc[(key, 1),'GENE_SET'] = sets[0]
 		if n_path == 2:
-			info_genes_of_interest.loc[(key, 1),'PATHWAYS'] = pathways[0]
-			info_genes_of_interest.loc[(key, 2),'PATHWAYS'] = pathways[1]
+			info_genes_of_interest.loc[(key, 1),'GENE_SET'] = sets[0]
+			info_genes_of_interest.loc[(key, 2),'GENE_SET'] = sets[1]
+		if n_path == 3:
+			info_genes_of_interest.loc[(key, 1),'GENE_SET'] = sets[0]
+			info_genes_of_interest.loc[(key, 2),'GENE_SET'] = sets[1]
+			info_genes_of_interest.loc[(key, 3),'GENE_SET'] = sets[2]
 			
 	# Set the TFs
 	for key, value in dict_GeneTF.items():
@@ -186,7 +189,7 @@ def extract_regulatory_genes():
 	# Remove the empty rows in the dataframe
 	for index, row in info_genes_of_interest.iterrows():
 		tfs = row['Transcription Factors']
-		path = row['PATHWAYS']
+		path = row['GENE_SET']
 		if (tfs == '') & (path == ''):
 			info_genes_of_interest.drop(index, inplace=True)
 
@@ -290,10 +293,10 @@ def extract_regulatory_genes():
 	# Join the two dataframes into a single one to have both information together
 	TFs_regul_genes_df = TFs_genes_df.join(regul_genes_df)
 	TFs_regul_genes_df['GENE_SYMBOL'] = TFs_regul_genes_df.index
-	TFs_regul_genes_df.index = range(176)  # set a new progressive index for this table
+	TFs_regul_genes_df.index = range(len(TFs_regul_genes_df))  # set a new progressive index for this table
 
 	# Add to the dataframe a column for storing also the Entrez Gene ID of each gene, besides the already present Gene Symbol
-	TFs_regul_genes_df.insert(1, 'ENTREZ_GENE_ID',['']*176)
+	TFs_regul_genes_df['ENTREZ_GENE_ID'] = ''
 
 	# Add the correct Entrez Gene ID for each gene
 	for index, row in TFs_regul_genes_df.iterrows():

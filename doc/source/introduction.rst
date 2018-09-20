@@ -6,9 +6,9 @@ The regulation system of each target gene is analyzed singularly and independent
 	
 	* **DNA methylation** (more specifically, the mean promotorial methylation level of the target gene);
 	
-	* **expression of target genes** belonging to the **same pathway** of the model gene;
+	* **expression of target genes** belonging to the **same gene set** as the model gene;
 	
-	* **expression of target genes** belonging to the **other pathways** with respect to the model gene;
+	* **expression of target genes** belonging to the **other gene sets** with respect to the model gene;
 	
 	* **expression of candidate regulatory genes** (i.e. those genes encoding for transcription factors having binding sites located in the promoter regions of genes of interest).
 
@@ -18,9 +18,9 @@ ENCODE and TCGA are the datasets currently available on GMQL for this type of da
 .. image:: images/tcgatumors.png
 
 
-So, this method allows to analyze the beavior of specific human genes within cancer patients, investigating the biological relationships which hold among each other and the effect that heterogeneous regulatory elements have on their expression.
+This method allows to analyze the beavior of specific human genes within cancer patients, investigating the biological relationships which hold among each other and the effect that heterogeneous regulatory elements have on their expression.
 
-The matter is understanding the relationships between the activity of each target gene and the genes belonging either to the same pathway or to the other relevant pathways, and the relationships between all such target genes and their candidate regulatory genes: this may lead to identify potential common regulators along each pathway, or frequent regulators with a key role in the regulation systems of genes of interest, eventually predicting their potential oncogenic role. Whenever a correlation exists, an assessment of the potential influence that the gene methylation may have on its expression is also made.
+The matter is understanding the relationships between the activity of each target gene and the genes belonging either to the same gene set or to the other relevant sets, and the relationships between all such target genes and their candidate regulatory genes: this may lead to identify common or frequent regulators with a key role in the regulation systems of the genes of interest, eventually predicting their potential oncogenic role. Whenever a correlation exists, an assessment of the potential influence that the gene methylation may have on its expression is also made.
 
 Analyzing all the features is usually extremely heavy from a computational standpoint, resulting in a high computational complexity. For this reason, in order to make this analysis sustainable within reasonable time and using standard computational resources, the approach implemented in this library does not analyze all the existing correlations among target genes and their regulatory features, but it identifies those associations that best contribute to the target genes expression regulation.
 The results are focused by design to the **best-predicting sets of features**, leaving out potential regulators with important biological functions, but with an extremely low predictive power with respect to the expression of the target gene.
@@ -33,7 +33,7 @@ The main phases that are performed during the complete execution of this method 
 	
 	3) extraction of the promotorial methylation sites and of their methylation levels (i.e. *beta_values*) for each target gene (from TCGA data samples collecting information on patients affected by the tumor of interest);
 	
-	4) extraction of the expression values of each target gene (from TCGA data sample scollecting information on patients affected by the tumor of interest);
+	4) extraction of the expression values of each target gene (from TCGA data sample collecting information on patients affected by the tumor of interest);
 	
 	5) extracted data manipulation and storage into data matrixes to use as inputs for the data analysis;
 	
@@ -70,36 +70,36 @@ You can see here a sample Python script for using the library::
 	m5_dict = gr.DataMatrixes.create_m5()
 	
 	# Data Analysis
-	# (these functions work by pathway and by model, so they have to be executed multiple times changing the input parameters
-	#  according to the genomic pathway you want to analyze and the model you want to build)
-	gr.FeatureSelection.forward_feature_selection(pathway='STEM_CELLS', n_data_matrix=2)
-	gr.FeatureSelection.forward_feature_selection(pathway='STEM_CELLS', n_data_matrix=3)
-	gr.FeatureSelection.forward_feature_selection(pathway='STEM_CELLS', n_data_matrix=5)
-	gr.FeatureSelection.forward_feature_selection(pathway='DNA_REPAIR', n_data_matrix=2)
-	gr.FeatureSelection.forward_feature_selection(pathway='DNA_REPAIR', n_data_matrix=3)
-	gr.FeatureSelection.forward_feature_selection(pathway='DNA_REPAIR', n_data_matrix=5)
+	# (these functions work by gene set and by model, so they have to be executed multiple times changing the input parameters
+	#  according to the gene set you want to analyze and the model you want to build)
+	gr.FeatureSelection.feature_selection(gene_set='STEM_CELLS', n_data_matrix=2, type=ffs_default)
+	gr.FeatureSelection.feature_selection(gene_set='STEM_CELLS', n_data_matrix=3, type=ffs_default)
+	gr.FeatureSelection.feature_selection(gene_set='STEM_CELLS', n_data_matrix=5, type=ffs_default)
+	gr.FeatureSelection.feature_selection(gene_set='DNA_REPAIR', n_data_matrix=2, type=ffs_default)
+	gr.FeatureSelection.feature_selection(gene_set='DNA_REPAIR', n_data_matrix=3, type=ffs_default)
+	gr.FeatureSelection.feature_selection(gene_set='DNA_REPAIR', n_data_matrix=5, type=ffs_default)
 	# [...]
-	gr.LinearRegression.linear_regression(pathway='STEM_CELLS', n_data_matrix=2)
-	gr.LinearRegression.linear_regression(pathway='STEM_CELLS', n_data_matrix=3)
-	gr.LinearRegression.linear_regression(pathway='STEM_CELLS', n_data_matrix=5)
-	gr.LinearRegression.linear_regression(pathway='DNA_REPAIR', n_data_matrix=2)
-	gr.LinearRegression.linear_regression(pathway='DNA_REPAIR', n_data_matrix=3)
-	gr.LinearRegression.linear_regression(pathway='DNA_REPAIR', n_data_matrix=5)
+	gr.LinearRegression.linear_regression(gene_set='STEM_CELLS', n_data_matrix=2)
+	gr.LinearRegression.linear_regression(gene_set='STEM_CELLS', n_data_matrix=3)
+	gr.LinearRegression.linear_regression(gene_set='STEM_CELLS', n_data_matrix=5)
+	gr.LinearRegression.linear_regression(gene_set='DNA_REPAIR', n_data_matrix=2)
+	gr.LinearRegression.linear_regression(gene_set='DNA_REPAIR', n_data_matrix=3)
+	gr.LinearRegression.linear_regression(gene_set='DNA_REPAIR', n_data_matrix=5)
 	# [...]
 	
 	# Summarize Results
-	gr.SummaryResults.summarize_reg(pathway='STEM_CELLS', n_data_matrix=2)
-	gr.SummaryResults.summarize_reg(pathway='STEM_CELLS', n_data_matrix=3)
-	gr.SummaryResults.summarize_reg(pathway='STEM_CELLS', n_data_matrix=5)
-	gr.SummaryResults.summarize_reg(pathway='DNA_REPAIR', n_data_matrix=2)
-	gr.SummaryResults.summarize_reg(pathway='DNA_REPAIR', n_data_matrix=3)
-	gr.SummaryResults.summarize_reg(pathway='DNA_REPAIR', n_data_matrix=5)
+	gr.SummaryResults.summarize_reg(gene_set='STEM_CELLS', n_data_matrix=2)
+	gr.SummaryResults.summarize_reg(gene_set='STEM_CELLS', n_data_matrix=3)
+	gr.SummaryResults.summarize_reg(gene_set='STEM_CELLS', n_data_matrix=5)
+	gr.SummaryResults.summarize_reg(gene_set='DNA_REPAIR', n_data_matrix=2)
+	gr.SummaryResults.summarize_reg(gene_set='DNA_REPAIR', n_data_matrix=3)
+	gr.SummaryResults.summarize_reg(gene_set='DNA_REPAIR', n_data_matrix=5)
 	# [...]
-	gr.SummaryResults.summarize_r2(pathway='STEM_CELLS')
-	gr.SummaryResults.summarize_r2(pathway='DNA_REPAIR')
+	gr.SummaryResults.summarize_r2(gene_set='STEM_CELLS')
+	gr.SummaryResults.summarize_r2(gene_set='DNA_REPAIR')
 	# [...]
-	gr.SummaryResults.best_genes(pathway='STEM_CELLS')
-	gr.SummaryResults.best_genes(pathway='DNA_REPAIR')
+	gr.SummaryResults.best_genes(gene_set='STEM_CELLS')
+	gr.SummaryResults.best_genes(gene_set='DNA_REPAIR')
 	# [...]
 
 	

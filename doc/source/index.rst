@@ -5,7 +5,7 @@
 
 Welcome to genereg's documentation!
 ===================================
-**genereg** is a Python library that implements a complete method for analyzing the regulation systems of target genes belonging to genomic pathways relevant for a specific genetic pathology, such as cancer, assessing the effect on their expression of multiple heterogeneous regulatory elements.
+**genereg** is a Python library that implements a complete method for analyzing the regulation systems of target genes relevant for a specific genetic pathology, such as cancer, assessing the effect on their expression of multiple heterogeneous regulatory elements.
 
 .. toctree::
    :maxdepth: 1

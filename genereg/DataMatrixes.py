@@ -5,13 +5,12 @@ import pandas as pd
 from pandas import ExcelWriter
 import numpy as np
 import pickle
-import xlsxwriter
 
 
 def create_m1():
 
 	"""
-	The CREATE_M1 operation builds the first data matrix for the analysis for each gene of interest, collecting the current gene expression and methylation values, along with the expression values of all the genes in the same pathway. One data matrix for each target gene is created and exported locally in as many Excel files as the considered genes; while the whole set of M1 matrixes is returned as a Python dictionary (dict_model_v1.p), where each target gene (set as key) is associated to a Pandas dataframe containing M1 data of interest (set as value). 
+	The CREATE_M1 operation builds the first data matrix for each gene of interest, collecting the current gene expression and methylation values, along with the expression values of all the genes in the same gene set. One data matrix for each target gene is created and exported locally in as many Excel files as the considered genes; while the whole set of M1 matrixes is returned as a Python dictionary (dict_model_v1.p), where each target gene (set as key) is associated to a Pandas dataframe containing M1 data of interest (set as value). 
 
 	:return: a Python dictionary
 	
@@ -25,18 +24,7 @@ def create_m1():
 	# Load input data:
 	
 	# Genes of interest
-	EntrezConversion_df = pd.read_excel('./Genes_of_Interest.xlsx',sheetname='Sheet1',header=0,converters={'GENE_SYMBOL':str,'ENTREZ_GENE_ID':str,'PATHWAY':str,'SubClass':str})
-	
-	# Convert the 'SubClass' attribute into a list
-	for index, row in EntrezConversion_df.iterrows():
-		subclasses = row['SubClass']
-		if isinstance(subclasses,str):
-			subclasses_list = subclasses.split(', ')
-		else:
-			s = ''	
-			subclasses_list = s.split(', ')
-			subclasses_list.remove('')
-		EntrezConversion_df.set_value(index,'SubClass',subclasses_list)
+	EntrezConversion_df = pd.read_excel('./Genes_of_Interest.xlsx',sheetname='Sheet1',header=0,converters={'GENE_SYMBOL':str,'ENTREZ_GENE_ID':str,'GENE_SET':str})
 
 	# Methylation values for genes of interest
 	methyl_df = pd.read_excel('./3_TCGA_Data/Methylation/Methylation Values.xlsx',sheetname='Sheet1',header=0)
@@ -61,12 +49,12 @@ def create_m1():
 		
 	# Create a dictionary where, for each gene of interest set as key (the model gene), we have a dataframe representing the model (matrix of data) of that gene.
 	# This model the expression and methylation values of the model gene in the first and second columns, and the expression of all the genes that belong to the
-	# model gene pathways in the other columns, while the different TCGA aliquots are the indexes of the rows.
+	# model gene set in the other columns, while the different TCGA aliquots are the indexes of the rows.
 	dict_model_v1 = {}
 
 	# Define the variables we need for the computation 
-	model_gene_pathways = []  # list of the pathways the model gene belongs to
-	same_pathway_genes = []   # list of the symbols of the genes belonging to the same pathways as the model gene
+	model_gene_pathways = []  # list of the gene sets the model gene belongs to
+	same_pathway_genes = []   # list of the symbols of the genes belonging to the same gene sets as the model gene
 	df_columns = []           # list of the model columns names
 
 	# Execute the following code for each gene of interest
@@ -74,16 +62,16 @@ def create_m1():
 		
 		model_gene_SYM = gene  # get the Gene Symbol of the current gene
 		
-		# Get the pathways of the model gene
+		# Get the gene sets of the model gene
 		for i, r in EntrezConversion_df.iterrows():
 			sym = r['GENE_SYMBOL']
 			if sym == model_gene_SYM:
-				p = r['PATHWAY']
+				p = r['GENE_SET']
 				model_gene_pathways.append(p)
 			
-		# Get the genes of interest belonging to the model gene pathways
+		# Get the genes of interest belonging to the model gene set
 		for i, r in EntrezConversion_df.iterrows():
-			path = r['PATHWAY']
+			path = r['GENE_SET']
 			if path in model_gene_pathways:
 				symbol = r['GENE_SYMBOL']
 				if symbol != model_gene_SYM:
@@ -93,7 +81,7 @@ def create_m1():
 		df_columns.append('EXPRESSION ('+model_gene_SYM+')')  # the second column contains the expression of the model gene
 		df_columns.append('METHYLATION ('+model_gene_SYM+')') # the third column contains the methylation of the model gene
 		for g in same_pathway_genes:  
-			df_columns.append(g)  # we have a column for each gene in the same pathways of the model gene
+			df_columns.append(g)  # we have a column for each gene in the same gene set of the model gene
 		
 		# In correspondence of the model gene key in the dictionary,
 		# set its model as value, with the proper indexes and column names 
@@ -118,7 +106,7 @@ def create_m1():
 			matrix.set_value(index,first_col,model_expr)
 			matrix.set_value(index,second_col,model_methyl)
 
-		# Add the expression values for all the other genes belonging to the same pathways of the model gene
+		# Add the expression values for all the other genes belonging to the same gene set of the model gene
 		for index, row in matrix.iterrows():
 			for column_name, values in matrix.iteritems(): # iterate along the columns of the dataframe
 				# skip the first two columns and add the proper values
@@ -134,7 +122,7 @@ def create_m1():
 	for gene in gene_interest_SYMs:
 		
 		model_gene_SYM = gene
-		pathway = EntrezConversion_df.loc[EntrezConversion_df['GENE_SYMBOL'] == model_gene_SYM, 'PATHWAY'].iloc[0]
+		pathway = EntrezConversion_df.loc[EntrezConversion_df['GENE_SYMBOL'] == model_gene_SYM, 'GENE_SET'].iloc[0]
 		gene_ID = EntrezConversion_df.loc[EntrezConversion_df['GENE_SYMBOL'] == model_gene_SYM, 'ENTREZ_GENE_ID'].iloc[0]
 		file_name = 'Gene '+gene_ID+' ['+model_gene_SYM+']'+' ('+pathway+') - Model_v1.xlsx'
 
@@ -144,7 +132,7 @@ def create_m1():
 		writer.save()
 
 
-	# Handle genes belonging to multiple pathways
+	# Handle genes belonging to multiple gene sets
 	multiple_pathway_genes = []
 	n = EntrezConversion_df['GENE_SYMBOL'].value_counts()
 	for i, v in n.items():
@@ -153,17 +141,17 @@ def create_m1():
     
 	for g in multiple_pathway_genes:
 		filtered_df = EntrezConversion_df.loc[EntrezConversion_df['GENE_SYMBOL'] == g]
-		pathways = (filtered_df.PATHWAY.unique()).tolist()
+		pathways = (filtered_df.GENE_SET.unique()).tolist()
 		gene_ID = EntrezConversion_df.loc[EntrezConversion_df['GENE_SYMBOL'] == g, 'ENTREZ_GENE_ID'].iloc[0]
 		
 		for p in pathways:
 			current_pathway_model =  dict_model_v1[g].copy()
 
-			# Extract current pathway genes of interest
+			# Extract the genes of interest in the current gene set
 			current_pathway_genes = []
 			for i, r in EntrezConversion_df.iterrows():
 				sym = r['GENE_SYMBOL']
-				path = r['PATHWAY']
+				path = r['GENE_SET']
 				if path == p:
 					current_pathway_genes.append(sym)
 					
@@ -190,9 +178,9 @@ def create_m1():
 def create_m2():
 
 	"""
-	The CREATE_M2 operation builds the second data matrix for the analysis for each gene of interest, adding to the first matrix data about the expression of candidate regulatory genes of each gene of interest. One data matrix for each target gene is created and exported locally in as many Excel files as the considered genes; while the whole set of M2 matrixes is returned as a Python dictionary (dict_model_v2.p), where each target gene (set as key) is associated to a Pandas dataframe containing M2 data of interest (set as value). 
+	The CREATE_M2 operation builds the second data matrix for each gene of interest, adding to the first matrix data about the expression of candidate regulatory genes of each gene of interest. One data matrix for each target gene is created and exported locally in as many Excel files as the considered genes; while the whole set of M2 matrixes is returned as a Python dictionary (dict_model_v2.p), where each target gene (set as key) is associated to a Pandas dataframe containing M2 data of interest (set as value). 
 
-	:return: a Python dictionaryù
+	:return: a Python dictionary
 	
 	Example::
 	
@@ -204,18 +192,7 @@ def create_m2():
 	# Load input data:
 
 	# Genes of interest
-	EntrezConversion_df = pd.read_excel('./Genes_of_Interest.xlsx',sheetname='Sheet1',header=0,converters={'GENE_SYMBOL':str,'ENTREZ_GENE_ID':str,'PATHWAY':str,'SubClass':str})
-	
-	# Convert the 'SubClass' attribute into a list
-	for index, row in EntrezConversion_df.iterrows():
-		subclasses = row['SubClass']
-		if isinstance(subclasses,str):
-			subclasses_list = subclasses.split(', ')
-		else:
-			s = ''	
-			subclasses_list = s.split(', ')
-			subclasses_list.remove('')
-		EntrezConversion_df.set_value(index,'SubClass',subclasses_list)
+	EntrezConversion_df = pd.read_excel('./Genes_of_Interest.xlsx',sheetname='Sheet1',header=0,converters={'GENE_SYMBOL':str,'ENTREZ_GENE_ID':str,'GENE_SET':str})
 
 	# Models_v1 of genes of interest
 	dict_model_v1 = pickle.load(open('./4_Data_Matrix_Construction/Model1/dict_model_v1.p', 'rb'))
@@ -305,7 +282,7 @@ def create_m2():
 	for gene in gene_interest_SYMs:
 		
 		model_gene_SYM = gene
-		pathway = EntrezConversion_df.loc[EntrezConversion_df['GENE_SYMBOL'] == model_gene_SYM, 'PATHWAY'].iloc[0]
+		pathway = EntrezConversion_df.loc[EntrezConversion_df['GENE_SYMBOL'] == model_gene_SYM, 'GENE_SET'].iloc[0]
 		gene_ID = EntrezConversion_df.loc[EntrezConversion_df['GENE_SYMBOL'] == model_gene_SYM, 'ENTREZ_GENE_ID'].iloc[0]
 		file_name = 'Gene '+gene_ID+' ['+model_gene_SYM+']'+' ('+pathway+') - Model_v2.xlsx'
 
@@ -315,7 +292,7 @@ def create_m2():
 		writer.save()
 
 	
-	# Handle genes belonging to multiple pathways
+	# Handle genes belonging to multiple gene sets
 	multiple_pathway_genes = []
 	n = EntrezConversion_df['GENE_SYMBOL'].value_counts()
 	for i, v in n.items():
@@ -324,7 +301,7 @@ def create_m2():
     
 	for g in multiple_pathway_genes:
 		filtered_df = EntrezConversion_df.loc[EntrezConversion_df['GENE_SYMBOL'] == g]
-		pathways = (filtered_df.PATHWAY.unique()).tolist()
+		pathways = (filtered_df.GENE_SET.unique()).tolist()
 		gene_ID = EntrezConversion_df.loc[EntrezConversion_df['GENE_SYMBOL'] == g, 'ENTREZ_GENE_ID'].iloc[0]
 		
 		for p in pathways:
@@ -334,7 +311,7 @@ def create_m2():
 			# Get the list of regulatory genes for the model gene
 			current_gene_RegulGenes_SYM = dict_RegulGenes[g]
             
-			# Create the M2 model for the current gene in the current pathway, identifying the new columns to be added to the matrix
+			# Create the M2 model for the current gene in the current gene set, identifying the new columns to be added to the matrix
 			current_pathway_new_columns = []
 			current_pathway_old_columns = list(current_pathway_model.columns.values)
 			for gene in current_gene_RegulGenes_SYM:
@@ -368,7 +345,7 @@ def create_m2():
 def create_m3():
 
 	"""
-	The CREATE_M3 operation builds the third data matrix for the analysis for each gene of interest, adding to the second matrix data about the expression of candidate regulatory genes of genes of interest belonging to the same pathway of the model gene. One data matrix for each target gene is created and exported locally in as many Excel files as the considered genes; while the whole set of M3 matrixes is returned as a Python dictionary (dict_model_v3.p), where each target gene (set as key) is associated to a Pandas dataframe containing M3 data of interest (set as value). 
+	The CREATE_M3 operation builds the third data matrix for the analysis for each gene of interest, adding to the second matrix data about the expression of candidate regulatory genes of genes of interest belonging to the same gene set of the model gene. One data matrix for each target gene is created and exported locally in as many Excel files as the considered genes; while the whole set of M3 matrixes is returned as a Python dictionary (dict_model_v3.p), where each target gene (set as key) is associated to a Pandas dataframe containing M3 data of interest (set as value). 
 
 	:return: a Python dictionary
 	
@@ -382,18 +359,7 @@ def create_m3():
 	# Load input data:
 
 	# Genes of interest
-	EntrezConversion_df = pd.read_excel('./Genes_of_Interest.xlsx',sheetname='Sheet1',header=0,converters={'GENE_SYMBOL':str,'ENTREZ_GENE_ID':str,'PATHWAY':str,'SubClass':str})
-	
-	# Convert the 'SubClass' attribute into a list
-	for index, row in EntrezConversion_df.iterrows():
-		subclasses = row['SubClass']
-		if isinstance(subclasses,str):
-			subclasses_list = subclasses.split(', ')
-		else:
-			s = ''	
-			subclasses_list = s.split(', ')
-			subclasses_list.remove('')
-		EntrezConversion_df.set_value(index,'SubClass',subclasses_list)
+	EntrezConversion_df = pd.read_excel('./Genes_of_Interest.xlsx',sheetname='Sheet1',header=0,converters={'GENE_SYMBOL':str,'ENTREZ_GENE_ID':str,'GENE_SET':str})
 
 	# Models_v2 of genes of interest
 	dict_model_v2 = pickle.load(open('./4_Data_Matrix_Construction/Model2/dict_model_v2.p', 'rb'))
@@ -420,14 +386,14 @@ def create_m3():
 
 
 	# Create a dictionary where, for each gene of interest set as key (the model gene), we have a dataframe representing the model (matrix of data) of that gene.
-	# This model contains all the information in the second model, plus additional columns with the expression of the regulatory genes for each one of the genes belonging to the model gene pathways,
+	# This model contains all the information in the second model, plus additional columns with the expression of the regulatory genes for each one of the genes belonging to the model gene set,
 	# while the different TCGA aliquots are the indexes of the rows
 	dict_model_v3 = {}
 
 	# Define the variables we need for the computation 
-	model_gene_pathways = []                # list of the pathways the model gene belongs to
-	same_pathway_genes = []                 # list of the symbols of the genes belonging to the same pathways as the model gene
-	same_pathway_genes_RegulGenes_SYM = []  # list of gene symbols for the regulatory genes of the same pathways genes
+	model_gene_pathways = []                # list of the gene sets the model gene belongs to
+	same_pathway_genes = []                 # list of the symbols of the genes belonging to the same gene sets as the model gene
+	same_pathway_genes_RegulGenes_SYM = []  # list of gene symbols for the regulatory genes of the genes in the same gene set
 	new_columns = []                        # list of the new columns names to be added to the model
 
 	# Execute the following code for each gene of interest
@@ -435,22 +401,22 @@ def create_m3():
 		
 		model_gene_SYM = gene  # get the Gene Symbol of the current gene
 		
-		# Get the pathways of the model gene
+		# Get the gene sets of the model gene
 		for i, r in EntrezConversion_df.iterrows():
 			sym = r['GENE_SYMBOL']
 			if sym == model_gene_SYM:
-				p = r['PATHWAY']
+				p = r['GENE_SET']
 				model_gene_pathways.append(p)
 			
-		# Get the genes of interest belonging to the model gene pathways
+		# Get the genes of interest belonging to the model gene sets
 		for i, r in EntrezConversion_df.iterrows():
-			path = r['PATHWAY']
+			path = r['GENE_SET']
 			if path in model_gene_pathways:
 				symbol = r['GENE_SYMBOL']
 				if symbol != model_gene_SYM:
 					same_pathway_genes.append(symbol)  
 		
-		# Get the list of regulatory genes for each one of the genes belonging to the same pathways of the model gene
+		# Get the list of regulatory genes for each one of the genes belonging to the same gene sets of the model gene
 		for elem in same_pathway_genes:
 			elem_regulatory_genes = dict_RegulGenes[elem]
 			same_pathway_genes_RegulGenes_SYM = same_pathway_genes_RegulGenes_SYM + elem_regulatory_genes
@@ -461,7 +427,7 @@ def create_m3():
 			
 		# Identify the new columns to be added to the matrix:
 		# in this case they are the columns corresponding to regulatory genes of genes in the
-		# same pathways of our model gene
+		# same gene sets of our model gene
 		# (be careful not to have duplicated columns, so add only the symbols of the genes
 		#  that are not already contained in the previous model)
 		old_columns = list(model_2_df.columns.values)
@@ -506,7 +472,7 @@ def create_m3():
 	for gene in gene_interest_SYMs:
 		
 		model_gene_SYM = gene
-		pathway = EntrezConversion_df.loc[EntrezConversion_df['GENE_SYMBOL'] == model_gene_SYM, 'PATHWAY'].iloc[0]
+		pathway = EntrezConversion_df.loc[EntrezConversion_df['GENE_SYMBOL'] == model_gene_SYM, 'GENE_SET'].iloc[0]
 		gene_ID = EntrezConversion_df.loc[EntrezConversion_df['GENE_SYMBOL'] == model_gene_SYM, 'ENTREZ_GENE_ID'].iloc[0]
 		file_name = 'Gene '+gene_ID+' ['+model_gene_SYM+']'+' ('+pathway+') - Model_v3.xlsx'
 
@@ -516,7 +482,7 @@ def create_m3():
 		writer.save()
 
 		
-	# Handle genes belonging to multiple pathways
+	# Handle genes belonging to multiple gene sets
 	multiple_pathway_genes = []
 	n = EntrezConversion_df['GENE_SYMBOL'].value_counts()
 	for i, v in n.items():
@@ -525,27 +491,27 @@ def create_m3():
     
 	for g in multiple_pathway_genes:
 		filtered_df = EntrezConversion_df.loc[EntrezConversion_df['GENE_SYMBOL'] == g]
-		pathways = (filtered_df.PATHWAY.unique()).tolist()
+		pathways = (filtered_df.GENE_SET.unique()).tolist()
 		gene_ID = EntrezConversion_df.loc[EntrezConversion_df['GENE_SYMBOL'] == g, 'ENTREZ_GENE_ID'].iloc[0]
 		
 		for p in pathways:
 			# Import the 'model_v2' matrix for the current gene
 			current_pathway_model = pd.read_excel('./4_Data_Matrix_Construction/Model2/Gene '+gene_ID+' ['+g+'] ('+p+') - Model_v2.xlsx',sheetname='Sheet1',header=0)	
 	           
-			# Current pathway model
+			# Current gene set model
 			current_pathway_genes = []
 			current_pathway_RegulGenes_SYM = []
 			current_pathway_new_columns = []
 
-			# Get the genes of interest belonging to the model gene pathway
+			# Get the genes of interest belonging to the model gene set
 			for i, r in EntrezConversion_df.iterrows():
-				path = r['PATHWAY']
+				path = r['GENE_SET']
 				if path == p:
 					sym = r['GENE_SYMBOL']
 					if sym != g:
 						current_pathway_genes.append(sym)  
 
-			# Get the list of regulatory genes for each one of the genes belonging to the same pathways of the model gene
+			# Get the list of regulatory genes for each one of the genes belonging to the same gene sets of the model gene
 			for elem in current_pathway_genes:
 				elem_regulatory_genes = dict_RegulGenes[elem]
 				current_pathway_RegulGenes_SYM = current_pathway_RegulGenes_SYM + elem_regulatory_genes
@@ -584,7 +550,7 @@ def create_m3():
 def create_m4():
 
 	"""
-	The CREATE_M4 operation builds the fourth data matrix for the analysis for each gene of interest, adding to the third matrix data about the expression of genes of interest belonging to the other pathways with respect ot the model gene. One data matrix for each target gene is created and exported locally in as many Excel files as the considered genes; while the whole set of M4 matrixes is returned as a Python dictionary (dict_model_v4.p), where each target gene (set as key) is associated to a Pandas dataframe containing M4 data of interest (set as value).
+	The CREATE_M4 operation builds the fourth data matrix for the analysis for each gene of interest, adding to the third matrix data about the expression of genes of interest belonging to the other gene sets with respect ot the model gene. One data matrix for each target gene is created and exported locally in as many Excel files as the considered genes; while the whole set of M4 matrixes is returned as a Python dictionary (dict_model_v4.p), where each target gene (set as key) is associated to a Pandas dataframe containing M4 data of interest (set as value).
 
 	:return: a Python dictionary
 	
@@ -598,18 +564,7 @@ def create_m4():
 	# Load input data:
 	
 	# Genes of interest
-	EntrezConversion_df = pd.read_excel('./Genes_of_Interest.xlsx',sheetname='Sheet1',header=0,converters={'GENE_SYMBOL':str,'ENTREZ_GENE_ID':str,'PATHWAY':str,'SubClass':str})
-	
-	# Convert the 'SubClass' attribute into a list
-	for index, row in EntrezConversion_df.iterrows():
-		subclasses = row['SubClass']
-		if isinstance(subclasses,str):
-			subclasses_list = subclasses.split(', ')
-		else:
-			s = ''	
-			subclasses_list = s.split(', ')
-			subclasses_list.remove('')
-		EntrezConversion_df.set_value(index,'SubClass',subclasses_list)
+	EntrezConversion_df = pd.read_excel('./Genes_of_Interest.xlsx',sheetname='Sheet1',header=0,converters={'GENE_SYMBOL':str,'ENTREZ_GENE_ID':str,'GENE_SET':str})
 
 	# Models_v3 of genes of interest
 	dict_model_v3 = pickle.load(open('./4_Data_Matrix_Construction/Model3/dict_model_v3.p', 'rb'))
@@ -633,13 +588,13 @@ def create_m4():
         
 
 	# Create a dictionary where, for each gene of interest set as key (the model gene), we have a dataframe representing the model (matrix of data) of that gene.
-	# This model contains all the information of the third model, plus additional columns with the expression of the genes of interest that belong to pathways different from the ones of the model gene,
+	# This model contains all the information of the third model, plus additional columns with the expression of the genes of interest that belong to gene sets different from the ones of the model gene,
 	# while the different TCGA aliquots are the indexes of the rows
 	dict_model_v4 = {}
 
 	# Define the variables we need for the computation 
-	model_gene_pathways = []  # list of the pathways the model gene belongs to
-	other_pathway_genes = []  # list of the symbols of the genes belonging to different pathways
+	model_gene_pathways = []  # list of the gene sets the model gene belongs to
+	other_pathway_genes = []  # list of the symbols of the genes belonging to different gene sets
 	new_columns = []          # list of the new columns names to be added to the model
 
 	# Execute the following code for each gene of interest
@@ -647,19 +602,19 @@ def create_m4():
 		
 		model_gene_SYM = gene  # get the Gene Symbol of the current gene
 		
-		# Get the pathways of the model gene
+		# Get the gene sets of the model gene
 		for i, r in EntrezConversion_df.iterrows():
 			sym = r['GENE_SYMBOL']
 			if sym == model_gene_SYM:
-				p = r['PATHWAY']
+				p = r['GENE_SET']
 				model_gene_pathways.append(p)
 			
-		# Get the genes of interest belonging to other pathways
+		# Get the genes of interest belonging to other gene sets
 		for i, r in EntrezConversion_df.iterrows():
-			path = r['PATHWAY']
+			path = r['GENE_SET']
 			if (path not in model_gene_pathways) and (path != 'GLUCOSE_METABOLISM'):
 				symbol = r['GENE_SYMBOL']
-				if symbol not in other_pathway_genes: # consider only once the genes belonging to multiple pathways
+				if symbol not in other_pathway_genes: # consider only once the genes belonging to multiple gene sets
 					other_pathway_genes.append(symbol)  
 		
 		# Get the third model for the current gene (model_v3)
@@ -667,7 +622,7 @@ def create_m4():
 		
 		# Identify the new columns to be added to the matrix:
 		# in this case they are the columns corresponding to genes of interest beloging to different
-		# pathways with respect to our model gene
+		# gene sets with respect to our model gene
 		# (be careful not to have duplicated columns, so add only the symbols of the genes
 		# that are not already contained in the previous model)
 		old_columns = list(model_3_df.columns.values)
@@ -678,7 +633,7 @@ def create_m4():
 		# Create the new part of the model to add
 		new_df = pd.DataFrame(index = aliquots, columns = new_columns)
 
-		# Add the expression values for all the these genes of interest belonging to other pathways and for each TCGA aliquot
+		# Add the expression values for all the these genes of interest belonging to other gene sets and for each TCGA aliquot
 		for index, row in new_df.iterrows():
 			for column_name, values in new_df.iteritems(): # iterate along the columns of the dataframe
 				expr = expr_interest_df.get_value(index,column_name)
@@ -703,7 +658,7 @@ def create_m4():
 	for gene in gene_interest_SYMs:
 		
 		model_gene_SYM = gene
-		pathway = EntrezConversion_df.loc[EntrezConversion_df['GENE_SYMBOL'] == model_gene_SYM, 'PATHWAY'].iloc[0]
+		pathway = EntrezConversion_df.loc[EntrezConversion_df['GENE_SYMBOL'] == model_gene_SYM, 'GENE_SET'].iloc[0]
 		gene_ID = EntrezConversion_df.loc[EntrezConversion_df['GENE_SYMBOL'] == model_gene_SYM, 'ENTREZ_GENE_ID'].iloc[0]
 		file_name = 'Gene '+gene_ID+' ['+model_gene_SYM+']'+' ('+pathway+') - Model_v4.xlsx'
 
@@ -713,7 +668,7 @@ def create_m4():
 		writer.save()
 
 
-	# Handle genes belonging to multiple pathways
+	# Handle genes belonging to multiple gene sets
 	multiple_pathway_genes = []
 	n = EntrezConversion_df['GENE_SYMBOL'].value_counts()
 	for i, v in n.items():
@@ -722,20 +677,20 @@ def create_m4():
     
 	for g in multiple_pathway_genes:
 		filtered_df = EntrezConversion_df.loc[EntrezConversion_df['GENE_SYMBOL'] == g]
-		pathways = (filtered_df.PATHWAY.unique()).tolist()
+		pathways = (filtered_df.GENE_SET.unique()).tolist()
 		gene_ID = EntrezConversion_df.loc[EntrezConversion_df['GENE_SYMBOL'] == g, 'ENTREZ_GENE_ID'].iloc[0]
 		
 		for p in pathways:
 			# Import the 'model_v3' matrix for the current gene
 			current_pathway_model = pd.read_excel('./4_Data_Matrix_Construction/Model3/Gene '+gene_ID+' ['+g+'] ('+p+') - Model_v3.xlsx',sheetname='Sheet1',header=0)		
 		
-			# Current pathway model
+			# Current gene set model
 			current_pathway_other_genes = []
 			current_pathway_new_columns = []
 
-			# Get the genes of interest belonging to other pathways
+			# Get the genes of interest belonging to other gene sets
 			for i, r in EntrezConversion_df.iterrows():
-				path = r['PATHWAY']
+				path = r['GENE_SET']
 				if (path != p):
 					symbol = r['GENE_SYMBOL']
 					if symbol != g:
@@ -750,14 +705,14 @@ def create_m4():
 			# Create the new part of the model to add
 			current_pathway_new_df = pd.DataFrame(index = aliquots, columns = current_pathway_new_columns)
 				
-			# Add the expression values for all the these genes of interest belonging to other pathways and for each TCGA aliquot
+			# Add the expression values for all the these genes of interest belonging to other gene sets and for each TCGA aliquot
 			for index, row in current_pathway_new_df.iterrows():
 				for column_name, values in current_pathway_new_df.iteritems():
 					expr = expr_interest_df.get_value(index,column_name)
 					current_pathway_new_df.set_value(index,column_name,expr)  
         
 			# Join the two dataframes and create the new model (model_v4)
-			current_pathway_model_4_df = current_pathway_model.join(stem_cells_new_df)    
+			current_pathway_model_4_df = current_pathway_model.join(current_pathway_new_df)    
 
 			writer = ExcelWriter('./4_Data_Matrix_Construction/Model4/Gene '+gene_ID+' ['+g+'] ('+p+') - Model_v4.xlsx')
 			current_pathway_model_4_df.to_excel(writer,'Sheet1')
@@ -769,7 +724,7 @@ def create_m4():
 def create_m5():
 
 	"""
-	The CREATE_M5 operation builds the fifth data matrix for the analysis for each gene of interest, adding to the fourth matrix data about the expression of candidate regulatory genes of genes of interest belonging to the other pathways with respect to the model gene.. One data matrix for each target gene is created and exported locally in as many Excel files as the considered genes; while the whole set of M5 matrixes is returned as a Python dictionary (dict_model_v5.p), where each target gene (set as key) is associated to a Pandas dataframe containing M5 data of interest (set as value).
+	The CREATE_M5 operation builds the fifth data matrix for the analysis for each gene of interest, adding to the fourth matrix data about the expression of candidate regulatory genes of genes of interest belonging to the other gene sets with respect to the model gene.. One data matrix for each target gene is created and exported locally in as many Excel files as the considered genes; while the whole set of M5 matrixes is returned as a Python dictionary (dict_model_v5.p), where each target gene (set as key) is associated to a Pandas dataframe containing M5 data of interest (set as value).
 
 	:return: a Python dictionary
 	
@@ -783,18 +738,7 @@ def create_m5():
 	# Load input data:
 
 	# Genes of interest
-	EntrezConversion_df = pd.read_excel('./Genes_of_Interest.xlsx',sheetname='Sheet1',header=0,converters={'GENE_SYMBOL':str,'ENTREZ_GENE_ID':str,'PATHWAY':str,'SubClass':str})
-	
-	# Convert the 'SubClass' attribute into a list
-	for index, row in EntrezConversion_df.iterrows():
-		subclasses = row['SubClass']
-		if isinstance(subclasses,str):
-			subclasses_list = subclasses.split(', ')
-		else:
-			s = ''	
-			subclasses_list = s.split(', ')
-			subclasses_list.remove('')
-		EntrezConversion_df.set_value(index,'SubClass',subclasses_list)
+	EntrezConversion_df = pd.read_excel('./Genes_of_Interest.xlsx',sheetname='Sheet1',header=0,converters={'GENE_SYMBOL':str,'ENTREZ_GENE_ID':str,'GENE_SET':str})
 
 	# Models_v4 of genes of interest
 	dict_model_v4 = pickle.load(open('./4_Data_Matrix_Construction/Model4/dict_model_v4.p', 'rb'))
@@ -821,14 +765,14 @@ def create_m5():
 
 
 	# Create a dictionary where, for each gene of interest set as key (the model gene), we have a dataframe representing the model (matrix of data) of that gene.
-	# This model contains all the information of the fourth model, plus additional columns with the expression of the regulatory genes for each gene of interest belonging to other pathways with respect to the model gene,
+	# This model contains all the information of the fourth model, plus additional columns with the expression of the regulatory genes for each gene of interest belonging to other gene sets with respect to the model gene,
 	# while the different TCGA aliquots are the indexes of the rows
 	dict_model_v5 = {}
 
 	# Define the variables we need for the computation 
-	model_gene_pathways = []  # list of the pathways the model gene belongs to
-	other_pathway_genes = []  # list of the gene symbol of the genes belonging to different pathways
-	other_pathway_genes_RegulGenes_SYM = []  # list of gene symbols for the regulatory genes of other pathways genes
+	model_gene_pathways = []  # list of the gene sets the model gene belongs to
+	other_pathway_genes = []  # list of the gene symbol of the genes belonging to different gene sets
+	other_pathway_genes_RegulGenes_SYM = []  # list of gene symbols for the regulatory genes of gene in other gene sets
 	new_columns = []  # list of the new columns names to be added to the model
 
 	# Execute the following code for each gene of interest
@@ -836,22 +780,22 @@ def create_m5():
 		
 		model_gene_SYM = gene  # get the Gene Symbol of the current gene
 		
-		# Get the pathways of the model gene
+		# Get the gene sets of the model gene
 		for i, r in EntrezConversion_df.iterrows():
 			sym = r['GENE_SYMBOL']
 			if sym == model_gene_SYM:
-				p = r['PATHWAY']
+				p = r['GENE_SET']
 				model_gene_pathways.append(p)
 			
-		# Get the genes of interest belonging to other pathways
+		# Get the genes of interest belonging to other gene sets
 		for i, r in EntrezConversion_df.iterrows():
-			path = r['PATHWAY']
+			path = r['GENE_SET']
 			if (path not in model_gene_pathways) and (path != 'GLUCOSE_METABOLISM'):
 				symbol = r['GENE_SYMBOL']
-				if symbol not in other_pathway_genes: # consider only once the genes belonging to multiple pathways
+				if symbol not in other_pathway_genes: # consider only once the genes belonging to multiple gene sets
 					other_pathway_genes.append(symbol) 
 		
-		# Get the list of regulatory genes for the other pathways genes
+		# Get the list of regulatory genes for the genes in the other gene sets
 		for elem in other_pathway_genes:
 			elem_regulatory_genes = dict_RegulGenes[elem]
 			other_pathway_genes_RegulGenes_SYM = other_pathway_genes_RegulGenes_SYM + elem_regulatory_genes
@@ -861,7 +805,7 @@ def create_m5():
 		model_4_df = dict_model_v4[model_gene_SYM]
 
 		# Identify the new columns to be added to the matrix:
-		# in this case they are the columns corresponding to regulatory genes of genes in other pathways
+		# in this case they are the columns corresponding to regulatory genes of genes in other gene sets
 		# (be careful not to have duplicated columns, so add only the symbols of the genes
 		# that are not already contained in the previous model)
 		old_columns = list(model_4_df.columns.values)
@@ -906,7 +850,7 @@ def create_m5():
 	for gene in gene_interest_SYMs:
 		
 		model_gene_SYM = gene
-		pathway = EntrezConversion_df.loc[EntrezConversion_df['GENE_SYMBOL'] == model_gene_SYM, 'PATHWAY'].iloc[0]
+		pathway = EntrezConversion_df.loc[EntrezConversion_df['GENE_SYMBOL'] == model_gene_SYM, 'GENE_SET'].iloc[0]
 		gene_ID = EntrezConversion_df.loc[EntrezConversion_df['GENE_SYMBOL'] == model_gene_SYM, 'ENTREZ_GENE_ID'].iloc[0]
 		file_name = 'Gene '+gene_ID+' ['+model_gene_SYM+']'+' ('+pathway+') - Model_v5.xlsx'
 
@@ -916,7 +860,7 @@ def create_m5():
 		writer.save()
 
 				
-	# Handle genes belonging to multiple pathways
+	# Handle genes belonging to multiple gene sets
 	multiple_pathway_genes = []
 	n = EntrezConversion_df['GENE_SYMBOL'].value_counts()
 	for i, v in n.items():
@@ -925,27 +869,27 @@ def create_m5():
     
 	for g in multiple_pathway_genes:
 		filtered_df = EntrezConversion_df.loc[EntrezConversion_df['GENE_SYMBOL'] == g]
-		pathways = (filtered_df.PATHWAY.unique()).tolist()
+		pathways = (filtered_df.GENE_SET.unique()).tolist()
 		gene_ID = EntrezConversion_df.loc[EntrezConversion_df['GENE_SYMBOL'] == g, 'ENTREZ_GENE_ID'].iloc[0]
 		
 		for p in pathways:
 			# Import the 'model_v4' matrix for the current gene
 			current_pathway_model = pd.read_excel('./4_Data_Matrix_Construction/Model4/Gene '+gene_ID+' ['+g+'] ('+p+') - Model_v4.xlsx',sheetname='Sheet1',header=0)	
 	 
-			# Current pathway model
+			# Current gene set model
 			current_pathway_other_genes = []
 			current_pathway_other_RegulGenes_SYM = []
 			current_pathway_new_columns = []
 
-			# Get the genes of interest belonging to other pathways
+			# Get the genes of interest belonging to other gene sets
 			for i, r in EntrezConversion_df.iterrows():
-				path = r['PATHWAY']
+				path = r['GENE_SET']
 				if (path != p):
 					sym = r['GENE_SYMBOL']
 					if sym != g:
 						current_pathway_other_genes.append(sym)  
 
-			# Get the list of regulatory genes for each one of the genes belonging to other pathways
+			# Get the list of regulatory genes for each one of the genes belonging to other gene sets
 			for elem in current_pathway_other_genes:
 				elem_regulatory_genes = dict_RegulGenes[elem]
 				current_pathway_other_RegulGenes_SYM = current_pathway_other_RegulGenes_SYM + elem_regulatory_genes

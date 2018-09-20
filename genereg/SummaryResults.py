@@ -8,20 +8,20 @@ import pickle
 import numpy as np
 
 
-def summarize_reg(pathway, n_data_matrix):
+def summarize_reg(gene_set, n_data_matrix):
 
 	"""
 	The SUMMARIZE_REG operation summarizes all the data analysis results, by collecting them in convenient tables that exported locally in Excel files.
 
-	:param pathway: genomic pathway to summarize
+	:param gene_set: the set of genes of interest to summarize
 	:param n_data_matrix: number identifying the data matrix to summarize (only 2,3 and 5 values are permitted)
 	
 	Example::
 	
 		import genereg as gr
-		gr.SummaryResults.summarize_reg(pathway='DNA_REPAIR', n_data_matrix=2)
-		gr.SummaryResults.summarize_reg(pathway='DNA_REPAIR', n_data_matrix=3)
-		gr.SummaryResults.summarize_reg(pathway='DNA_REPAIR', n_data_matrix=5)		
+		gr.SummaryResults.summarize_reg(gene_set='DNA_REPAIR', n_data_matrix=2)
+		gr.SummaryResults.summarize_reg(gene_set='DNA_REPAIR', n_data_matrix=3)
+		gr.SummaryResults.summarize_reg(gene_set='DNA_REPAIR', n_data_matrix=5)		
 	"""
 
 	# Check input parameters	
@@ -40,29 +40,18 @@ def summarize_reg(pathway, n_data_matrix):
 	# Import the dictionary of genes of interest with their candidate regulatory genes
 	dict_RegulGenes = pickle.load(open('./2_Regulatory_Genes/dict_RegulGenes.p', 'rb'))
 
-	# Import the list of genes of interest and extract in a list the Gene Symbols of all the genes belonging to the current pathway
-	EntrezConversion_df = pd.read_excel('./Genes_of_Interest.xlsx',sheetname='Sheet1',header=0,converters={'GENE_SYMBOL':str,'ENTREZ_GENE_ID':str,'PATHWAY':str,'SubClass':str})
-	
-	# Convert the 'SubClass' attribute into a list
-	for index, row in EntrezConversion_df.iterrows():
-		subclasses = row['SubClass']
-		if isinstance(subclasses,str):
-			subclasses_list = subclasses.split(', ')
-		else:
-			s = ''	
-			subclasses_list = s.split(', ')
-			subclasses_list.remove('')
-		EntrezConversion_df.set_value(index,'SubClass',subclasses_list)
+	# Import the list of genes of interest and extract in a list the Gene Symbols of all the genes belonging to the current gene set
+	EntrezConversion_df = pd.read_excel('./Genes_of_Interest.xlsx',sheetname='Sheet1',header=0,converters={'GENE_SYMBOL':str,'ENTREZ_GENE_ID':str,'GENE_SET':str})
 
 	SYMs_current_pathway = []
 	for index, row in EntrezConversion_df.iterrows():
 		sym = row['GENE_SYMBOL']
-		path = row['PATHWAY']
-		if path == pathway:
+		path = row['GENE_SET']
+		if path == gene_set:
 			SYMs_current_pathway.append(sym)
 
 	if (model == '3') or (model == '5'):
-		# Create a list containing the Gene Symbols of the regulatory genes of the genes in the current pathway
+		# Create a list containing the Gene Symbols of the regulatory genes of the genes in the current gene set
 		current_regulatory_genes = []
 		for key, value in dict_RegulGenes.items():
 			if key in SYMs_current_pathway:
@@ -71,15 +60,15 @@ def summarize_reg(pathway, n_data_matrix):
 						current_regulatory_genes.append(gene)
 	
 	if (model == '5'):
-		# Create a list containing the Gene Symbols of genes in the other pathways
+		# Create a list containing the Gene Symbols of genes in the other gene sets
 		SYMs_other_pathways = []
 		for index, row in EntrezConversion_df.iterrows():
 			sym = row['GENE_SYMBOL']
-			path = row['PATHWAY']
-			if not (path == pathway):
+			path = row['GENE_SET']
+			if not (path == gene_set):
 				SYMs_other_pathways.append(sym)
 			
-		# Create a list containing the Gene Symbols of the regulatory genes of the genes in the other pathways
+		# Create a list containing the Gene Symbols of the regulatory genes of the genes in the other gene sets
 		regulatory_genes_other = []
 		for key, value in dict_RegulGenes.items():
 			if key not in SYMs_current_pathway:
@@ -98,9 +87,9 @@ def summarize_reg(pathway, n_data_matrix):
 	
 		# Import the current and, if present, the previous model of the current gene
 		gene_ID = EntrezConversion_df.loc[EntrezConversion_df['GENE_SYMBOL'] == current_gene, 'ENTREZ_GENE_ID'].iloc[0]
-		model_gene_df = pd.read_excel('./4_Data_Matrix_Construction/Model'+model+'/Gene '+gene_ID+' ['+current_gene+']'+' ('+pathway+') - Model_v'+model+'.xlsx',sheetname='Sheet1',header=0)
+		model_gene_df = pd.read_excel('./4_Data_Matrix_Construction/Model'+model+'/Gene '+gene_ID+' ['+current_gene+']'+' ('+gene_set+') - Model_v'+model+'.xlsx',sheetname='Sheet1',header=0)
 		if not (model == '2'):
-			previous_model_df = pd.read_excel('./4_Data_Matrix_Construction/Model'+previous_model+'/Gene '+gene_ID+' ['+current_gene+']'+' ('+pathway+') - Model_v'+previous_model+'.xlsx',sheetname='Sheet1',header=0)
+			previous_model_df = pd.read_excel('./4_Data_Matrix_Construction/Model'+previous_model+'/Gene '+gene_ID+' ['+current_gene+']'+' ('+gene_set+') - Model_v'+previous_model+'.xlsx',sheetname='Sheet1',header=0)
 		
 		# Extract the list of new features, added to the current model, w.r.t. the previous one
 		if not (model == '2'): 
@@ -110,8 +99,8 @@ def summarize_reg(pathway, n_data_matrix):
 			lr_summary_df.set_value(current_gene,'N° New Features w.r.t. Previous Model',len(new_features))
 	
 		# Import the feature selection and linear regression summary tables
-		feature_sel_df = pd.read_excel('./5_Data_Analysis/'+pathway+'/FeatureSelection/M'+model+'/Feature Selection SUMMARY.xlsx',sheetname='Sheet1',header=0)
-		lin_reg_df = pd.read_excel('./5_Data_Analysis/'+pathway+'/LinearRegression/M'+model+'/Linear Regression R2 SCORES.xlsx',sheetname='Sheet1',header=0)
+		feature_sel_df = pd.read_excel('./5_Data_Analysis/'+gene_set+'/FeatureSelection/M'+model+'/Feature Selection SUMMARY.xlsx',sheetname='Sheet1',header=0)
+		lin_reg_df = pd.read_excel('./5_Data_Analysis/'+gene_set+'/LinearRegression/M'+model+'/Linear Regression R2 SCORES.xlsx',sheetname='Sheet1',header=0)
 		
 		# Extract and store the results in the summary dataframe
 		n_features = feature_sel_df.get_value(current_gene,'TOT Inital N° Features')
@@ -131,7 +120,7 @@ def summarize_reg(pathway, n_data_matrix):
 
 	# Export the summary dataframe in an Excel file
 	lr_summary_df = lr_summary_df.sort_values(by=['Adj.R2'], ascending=[False])
-	filename = './5_Data_Analysis/'+pathway+'/Feature Selection and Linear Regression.xlsx'
+	filename = './5_Data_Analysis/'+gene_set+'/Feature Selection and Linear Regression.xlsx'
 	writer = ExcelWriter(filename,engine='openpyxl')
 	try:
 		writer.book = load_workbook(filename)
@@ -143,7 +132,7 @@ def summarize_reg(pathway, n_data_matrix):
 	writer.save()
 		
 
-	# Extract relevant features for each gene of the current pathway and store them in a summary table and define a dataframe to summarize the features selected for each model gene
+	# Extract relevant features for each gene of the current gene set and store them in a summary table and define a dataframe to summarize the features selected for each model gene
 	features_summary_df = pd.DataFrame(index=SYMs_current_pathway)
 
 	for current_gene in SYMs_current_pathway:
@@ -151,13 +140,13 @@ def summarize_reg(pathway, n_data_matrix):
 		gene_ID = EntrezConversion_df.loc[EntrezConversion_df['GENE_SYMBOL'] == current_gene, 'ENTREZ_GENE_ID'].iloc[0]
 		
 		# Import the regression coefficients
-		coeff_df = pd.read_excel('./5_Data_Analysis/'+pathway+'/LinearRegression/M'+model+'/Coefficients/Coefficients (M'+model+') - Gene '+gene_ID+' ['+current_gene+'].xlsx',sheetname='Sheet1',header=0)
+		coeff_df = pd.read_excel('./5_Data_Analysis/'+gene_set+'/LinearRegression/M'+model+'/Coefficients/Coefficients (M'+model+') - Gene '+gene_ID+' ['+current_gene+'].xlsx',sheetname='Sheet1',header=0)
 
 		# Import the confidence intervals
-		ci_df = pd.read_excel('./5_Data_Analysis/'+pathway+'/LinearRegression/M'+model+'/Confidence Intervals/Confidence Intervals (M'+model+') - Gene '+gene_ID+' ['+current_gene+'].xlsx',sheetname='Sheet1',header=0)
+		ci_df = pd.read_excel('./5_Data_Analysis/'+gene_set+'/LinearRegression/M'+model+'/Confidence Intervals/Confidence Intervals (M'+model+') - Gene '+gene_ID+' ['+current_gene+'].xlsx',sheetname='Sheet1',header=0)
 		
 		# Import the correlation matrix
-		corr_df = pd.read_excel('./5_Data_Analysis/'+pathway+'/LinearRegression/M'+model+'/Correlation Matrix/Correlation Matrix (M'+model+') - Gene '+gene_ID+' ['+current_gene+'].xlsx',sheetname='Sheet1',header=0)
+		corr_df = pd.read_excel('./5_Data_Analysis/'+gene_set+'/LinearRegression/M'+model+'/Correlation Matrix/Correlation Matrix (M'+model+') - Gene '+gene_ID+' ['+current_gene+'].xlsx',sheetname='Sheet1',header=0)
 		
 		# Select the relevant features on the basis of the confidence intervals (i.e. if the confidence interval does not contain 0, then the feature is significant for the model)
 		relevant_features = []
@@ -182,48 +171,48 @@ def summarize_reg(pathway, n_data_matrix):
 		if model == '2':
 			for f in relevant_features:
 				if f in SYMs_current_pathway:
-					descr = 'Gene of the '+pathway+' pathway'
+					descr = 'Gene of the '+gene_set+' set'
 					relevant_features_df.set_value(f,'Feature Description',descr)
 				elif 'METHYLATION' in f:
-					descr = 'Methylation of the model gene ['+current_gene+'] of the '+pathway+' pathway'
+					descr = 'Methylation of the model gene ['+current_gene+'] in the '+gene_set+' set'
 					relevant_features_df.set_value(f,'Feature Description',descr)
 				elif f in dict_RegulGenes[current_gene]:
-					descr = 'Candidate regulatory gene of the model gene ['+current_gene+'] of the '+pathway+' pathway'
+					descr = 'Candidate regulatory gene of the model gene ['+current_gene+'] of the '+gene_set+' set'
 					relevant_features_df.set_value(f,'Feature Description',descr)
 		
 		elif model == '3':
 			for f in relevant_features:
 				if f in SYMs_current_pathway:
-					descr = 'Gene of the '+pathway+' pathway'
+					descr = 'Gene of the '+gene_set+' set'
 					relevant_features_df.set_value(f,'Feature Description',descr)
 				elif 'METHYLATION' in f:
-					descr = 'Methylation of the model gene ['+current_gene+'] of the '+pathway+' pathway'
+					descr = 'Methylation of the model gene ['+current_gene+'] in the '+gene_set+' set'
 					relevant_features_df.set_value(f,'Feature Description',descr)
 				elif f in dict_RegulGenes[current_gene]:
-					descr = 'Candidate regulatory gene of the model gene ['+current_gene+'] of the '+pathway+' pathway'
+					descr = 'Candidate regulatory gene of the model gene ['+current_gene+'] of the '+gene_set+' set'
 					relevant_features_df.set_value(f,'Feature Description',descr)
 				elif not(f in dict_RegulGenes[current_gene]) and (f in current_regulatory_genes):
-					descr = 'Candidate regulatory gene of the '+pathway+' pathway'
+					descr = 'Candidate regulatory gene of the genes in the '+gene_set+' set'
 					relevant_features_df.set_value(f,'Feature Description',descr)
 		
 		elif model == '5':
 			for f in relevant_features:
 				if f in SYMs_current_pathway:
-					descr = 'Gene of the '+pathway+' pathway'
+					descr = 'Gene of the '+gene_set+' set'
 					relevant_features_df.set_value(f,'Feature Description',descr)
 				elif 'METHYLATION' in f:
-					descr = 'Methylation of the model gene ['+current_gene+'] of the '+pathway+' pathway'
+					descr = 'Methylation of the model gene ['+current_gene+'] in the '+gene_set+' set'
 					relevant_features_df.set_value(f,'Feature Description',descr)
 				elif f in dict_RegulGenes[current_gene]:
-					descr = 'Candidate regulatory gene of the model gene ['+current_gene+'] of the '+pathway+' pathway'
+					descr = 'Candidate regulatory gene of the model gene ['+current_gene+'] of the '+gene_set+' set'
 					relevant_features_df.set_value(f,'Feature Description',descr)
 				elif not(f in dict_RegulGenes[current_gene]) and (f in current_regulatory_genes):
-					descr = 'Candidate regulatory gene of the '+pathway+' pathway'
+					descr = 'Candidate regulatory gene of the genes in the '+gene_set+' set'
 					relevant_features_df.set_value(f,'Feature Description',descr)
 				elif f in SYMs_other_pathways:
 					df_temp = EntrezConversion_df.loc[EntrezConversion_df['GENE_SYMBOL'] == f].copy()
-					f_pathways = (df_temp.PATHWAY.unique()).tolist()
-					descr = 'Gene of the pathways: '+(', '.join(f_pathways))
+					f_pathways = (df_temp.GENE_SET.unique()).tolist()
+					descr = 'Gene of the gene sets: '+(', '.join(f_pathways))
 					relevant_features_df.set_value(f,'Feature Description',descr)
 				elif f in regulatory_genes_other:
 					regulated_genes_other = []
@@ -232,14 +221,14 @@ def summarize_reg(pathway, n_data_matrix):
 							if f in value:  
 								regulated_genes_other.append(key)
 					df_temp = EntrezConversion_df.loc[EntrezConversion_df['GENE_SYMBOL'].isin(regulated_genes_other)].copy()
-					f_pathways = (df_temp.PATHWAY.unique()).tolist()
-					descr = 'Candidate regulatory gene of the pathways: '+(', '.join(f_pathways))
+					f_pathways = (df_temp.GENE_SET.unique()).tolist()
+					descr = 'Candidate regulatory gene of the gene sets: '+(', '.join(f_pathways))
 					relevant_features_df.set_value(f,'Feature Description',descr)           
 
 				
 		# Export the dataframe in an Excel file
 		relevant_features_df = relevant_features_df.sort_values(by=['Regression Coefficient'], ascending=[False])
-		filename = './5_Data_Analysis/'+pathway+'/Relevant Features - Gene '+gene_ID+' ['+current_gene+'].xlsx'
+		filename = './5_Data_Analysis/'+gene_set+'/Relevant Features - Gene '+gene_ID+' ['+current_gene+'].xlsx'
 		writer = ExcelWriter(filename,engine='openpyxl')
 		try:
 			writer.book = load_workbook(filename)
@@ -257,7 +246,7 @@ def summarize_reg(pathway, n_data_matrix):
 			features_summary_df.set_value(current_gene, index, str_order)
 			
 	# Export the summary dataframe in an Excel file
-	filename = './5_Data_Analysis/'+pathway+'/Order of Features Selected.xlsx'
+	filename = './5_Data_Analysis/'+gene_set+'/Order of Features Selected.xlsx'
 	writer = ExcelWriter(filename,engine='openpyxl')
 	try:
 		writer.book = load_workbook(filename)
@@ -269,42 +258,31 @@ def summarize_reg(pathway, n_data_matrix):
 	writer.save()
 
 
-def summarize_r2(pathway):
+def summarize_r2(gene_set):
 
 	"""
 	The SUMMARIZE_R2 operation summarizes R2 and Adjusted R2 scores for each target gene in each regression model, storing them locally in a single Excel file.
 
-	:param pathway: genomic pathway to summarize
+	:param gene_set: the set of genes of interest to summarize
 	
 	Example::
 	
 		import genereg as gr
-		gr.SummaryResults.summarize_r2(pathway='DNA_REPAIR')
+		gr.SummaryResults.summarize_r2(gene_set='DNA_REPAIR')
 	"""
 
 	
 	# Define the models to summarize
 	models = ['2','3','5']
 
-	# Import the list of genes of interest and extract in a list the Gene Symbols of all the genes belonging to the current pathway
-	EntrezConversion_df = pd.read_excel('./Genes_of_Interest.xlsx',sheetname='Sheet1',header=0,converters={'GENE_SYMBOL':str,'ENTREZ_GENE_ID':str,'PATHWAY':str,'SubClass':str})
-	
-	# Convert the 'SubClass' attribute into a list
-	for index, row in EntrezConversion_df.iterrows():
-		subclasses = row['SubClass']
-		if isinstance(subclasses,str):
-			subclasses_list = subclasses.split(', ')
-		else:
-			s = ''	
-			subclasses_list = s.split(', ')
-			subclasses_list.remove('')
-		EntrezConversion_df.set_value(index,'SubClass',subclasses_list)
+	# Import the list of genes of interest and extract in a list the Gene Symbols of all the genes belonging to the current gene set
+	EntrezConversion_df = pd.read_excel('./Genes_of_Interest.xlsx',sheetname='Sheet1',header=0,converters={'GENE_SYMBOL':str,'ENTREZ_GENE_ID':str,'GENE_SET':str})
 
 	SYMs_current_pathway = []
 	for index, row in EntrezConversion_df.iterrows():
 		sym = row['GENE_SYMBOL']
-		path = row['PATHWAY']
-		if path == pathway:
+		path = row['GENE_SET']
+		if path == gene_set:
 			SYMs_current_pathway.append(sym)
 
 			
@@ -314,7 +292,7 @@ def summarize_r2(pathway):
 	for m in models:
 		
 		# Import the summary table for the current model
-		current_df = pd.read_excel('./5_Data_Analysis/'+pathway+'/Feature Selection and Linear Regression.xlsx',sheetname='M'+m,header=0)
+		current_df = pd.read_excel('./5_Data_Analysis/'+gene_set+'/Feature Selection and Linear Regression.xlsx',sheetname='M'+m,header=0)
 		
 		# Extract the useful information and store it the summary dataframe
 		for index, row in current_df.iterrows():
@@ -328,54 +306,43 @@ def summarize_r2(pathway):
 
 	# Export the summary dataframe in an Excel file
 	summary_df = summary_df.sort_values(by=['Adj.R2 (M5)'], ascending=[False])
-	writer = ExcelWriter('./5_Data_Analysis/'+pathway+'/R2 and Adj.R2 Scores.xlsx',engine='openpyxl')
+	writer = ExcelWriter('./5_Data_Analysis/'+gene_set+'/R2 and Adj.R2 Scores.xlsx',engine='openpyxl')
 	summary_df.to_excel(writer,'Sheet1')
 	writer.save()
 	
 
-def best_genes(pathway):
+def best_genes(gene_set):
 
 	"""
 	The BEST_GENES operation collects the target genes with the best linear fit (Adjusted R2 >= 0.6) in the three regression models, storing them locally in a single Excel file.
 
-	:param pathway: genomic pathway to summarize
+	:param gene_set: the set of genes of interest to summarize
 	
 	Example::
 	
 		import genereg as gr
-		gr.SummaryResults.best_genes(pathway='DNA_REPAIR')		
+		gr.SummaryResults.best_genes(gene_set='DNA_REPAIR')		
 	"""
 
 	
 	# Define the models to summarize
 	models = ['2','3','5']
 
-	# Import the list of genes of interest and extract in a list the Gene Symbols of all the genes belonging to the current pathway
-	EntrezConversion_df = pd.read_excel('./Genes_of_Interest.xlsx',sheetname='Sheet1',header=0,converters={'GENE_SYMBOL':str,'ENTREZ_GENE_ID':str,'PATHWAY':str,'SubClass':str})
-	
-	# Convert the 'SubClass' attribute into a list
-	for index, row in EntrezConversion_df.iterrows():
-		subclasses = row['SubClass']
-		if isinstance(subclasses,str):
-			subclasses_list = subclasses.split(', ')
-		else:
-			s = ''	
-			subclasses_list = s.split(', ')
-			subclasses_list.remove('')
-		EntrezConversion_df.set_value(index,'SubClass',subclasses_list)
+	# Import the list of genes of interest and extract in a list the Gene Symbols of all the genes belonging to the current gene set
+	EntrezConversion_df = pd.read_excel('./Genes_of_Interest.xlsx',sheetname='Sheet1',header=0,converters={'GENE_SYMBOL':str,'ENTREZ_GENE_ID':str,'GENE_SET':str})
 
 	SYMs_current_pathway = []
 	for index, row in EntrezConversion_df.iterrows():
 		sym = row['GENE_SYMBOL']
-		path = row['PATHWAY']
-		if path == pathway:
+		path = row['GENE_SET']
+		if path == gene_set:
 			SYMs_current_pathway.append(sym)
 			
 	for model in models:        
         
-		# Import the summary table cointaining the value of the R2 for each model and for each gene of interest in the current pathway
+		# Import the summary table cointaining the value of the R2 for each model and for each gene of interest in the current gene set
 		# and extract the list of "good" genes, the ones that have R2 >= 0.6 in the current model
-		summary_r2_df = pd.read_excel('./5_Data_Analysis/'+pathway+'/R2 and Adj.R2 Scores.xlsx',sheetname='Sheet1',header=0)
+		summary_r2_df = pd.read_excel('./5_Data_Analysis/'+gene_set+'/R2 and Adj.R2 Scores.xlsx',sheetname='Sheet1',header=0)
 		summary_r2_df = summary_r2_df.sort_values(by=['Adj.R2 (M'+model+')'], ascending=[False])
 
 		good_genes = []
@@ -414,7 +381,7 @@ def best_genes(pathway):
 			
 			# Import the table containing the significant features extracted for the current gene
 			gene_ID = EntrezConversion_df.loc[EntrezConversion_df['GENE_SYMBOL'] == current_gene, 'ENTREZ_GENE_ID'].iloc[0]
-			features_df = pd.read_excel('./5_Data_Analysis/'+pathway+'/Relevant Features - Gene '+gene_ID+' ['+current_gene+'].xlsx',sheetname='M'+model,header=0)
+			features_df = pd.read_excel('./5_Data_Analysis/'+gene_set+'/Relevant Features - Gene '+gene_ID+' ['+current_gene+'].xlsx',sheetname='M'+model,header=0)
 			
 			feature_counter = 1
 			for index, row in features_df.iterrows():
@@ -434,7 +401,7 @@ def best_genes(pathway):
 				final_summary_df.drop(index, inplace=True)
 				
 		# Export the summary dataframe in an Excel file
-		filename = './5_Data_Analysis/'+pathway+'/Best Genes.xlsx'
+		filename = './5_Data_Analysis/'+gene_set+'/Best Genes.xlsx'
 		writer = ExcelWriter(filename,engine='openpyxl')
 		try:
 			writer.book = load_workbook(filename)
