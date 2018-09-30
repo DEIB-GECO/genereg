@@ -72,7 +72,7 @@ def extract_expression(tumor, platform, gencode_version):
 	gl.login()
 	gl.set_mode('remote')
 
-		# Load the TCGA datasets to be used in the query
+	# Load the TCGA datasets to be used in the query
 	methylation_dataset = gl.load_from_remote(remote_name='GRCh38_TCGA_methylation', owner='public')  
 	expression_dataset = gl.load_from_remote(remote_name='GRCh38_TCGA_gene_expression', owner='public') 
 

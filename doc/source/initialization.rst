@@ -30,8 +30,14 @@ Library Initialization
 -----------------------
 You have to execute the following function in order to initialize the library and to correctly set all the initial library settings:
 
-..  automodule:: genereg.Initialize
-    :members:
+``library_init()``
+
+	The LIBRARY_INIT operation performs a preliminary initialization procedure and sets all the initial library settings.
+	
+	Example::
+
+		import genereg as gr
+		gr.Initialize.library_init()
 
 This function builds the complete directory tree for storing files and results in the *library workspace*, it downloads and saves the complete lists of Transcription Factors (from both UniProt and ENCODE) and human genes (from HGNC) to be used for the **Gene - TFs Mapping** phase, and it creates some useful soon-to-be-used files, starting from the "*Genes_of_Interest.xlsx*" table.
 

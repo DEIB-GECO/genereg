@@ -606,29 +606,52 @@ def feature_selection(gene_set, n_data_matrix, type):
 			# Normalize and convert back to pandas dataframe
 			matrix_scaled = scaler.fit_transform(matrix)
 			model_gene_df = pd.DataFrame(matrix_scaled, index=to_normalize.index, columns=to_normalize.columns)
-    
-    
-			# Select the best 'alpha' value in Lasso Regression:
-    
-			# Define the target and the predictors
-			X_alpha = np.array(model_gene_df.drop(['EXPRESSION ('+current_gene+')'],1))
-			y_alpha = np.array(model_gene_df['EXPRESSION ('+current_gene+')'])
 			
-			# Create lasso regression with three possible alpha values
-			regr_cv = LassoCV(alphas=[0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0])
+			
+		    # Import the dictionary containing the information needed to split the dataframe in five test sets
+			dict_test_split = pickle.load(open('./5_Data_Analysis/dict_test_split.p', 'rb'))
+			
+			# Split the dataframe into five dataframes that will be used as test sets
+			model_gene_df_test1 = model_gene_df.loc[dict_test_split['Test_1']]
+			model_gene_df_test2 = model_gene_df.loc[dict_test_split['Test_2']]
+			model_gene_df_test3 = model_gene_df.loc[dict_test_split['Test_3']]
+			model_gene_df_test4 = model_gene_df.loc[dict_test_split['Test_4']]
+			model_gene_df_test5 = model_gene_df.loc[dict_test_split['Test_5']]
+
+			# Define the corresponding five dataframes to be used as training sets
+			model_gene_df_train1 = model_gene_df[~model_gene_df.index.isin(model_gene_df_test1.index)]
+			model_gene_df_train2 = model_gene_df[~model_gene_df.index.isin(model_gene_df_test2.index)]
+			model_gene_df_train3 = model_gene_df[~model_gene_df.index.isin(model_gene_df_test3.index)]
+			model_gene_df_train4 = model_gene_df[~model_gene_df.index.isin(model_gene_df_test4.index)]
+			model_gene_df_train5 = model_gene_df[~model_gene_df.index.isin(model_gene_df_test5.index)]
+			
+			
+			# CASE 1 ---------------------------------------------------------------------------------------------------------
+			model_gene_df_train = model_gene_df_train1.copy()
+			model_gene_df_test = model_gene_df_test1.copy()
+			
+			# Select the best 'alpha' value in Lasso Regression:
+			
+			# Define the target and the predictors
+			X_train = np.array(model_gene_df_train.drop(['EXPRESSION ('+current_gene+')'],1))
+			X_test = np.array(model_gene_df_test.drop(['EXPRESSION ('+current_gene+')'],1))
+			y_train = np.array(model_gene_df_train['EXPRESSION ('+current_gene+')'])
+			y_test = np.array(model_gene_df_test['EXPRESSION ('+current_gene+')'])
+			
+			# Create lasso regression with multiple possible alpha values
+			regr_cv = LassoCV(alphas=[0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 1, 2, 5, 10], cv=5)
 			
 			# Fit the linear regression
-			model_cv = regr_cv.fit(X_alpha, y_alpha)
+			model_cv = regr_cv.fit(X_train, y_train)
 			
 			# Extract the best alpha value
 			best_alpha = model_cv.alpha_
-
 			
 			# Execute the LASSO regression according to the selected 'alpha' to select the most relevant fetaures:
 			
 			# Define the features (predictors X) and the target (label y)
-			X = model_gene_df.drop(['EXPRESSION ('+current_gene+')'],1)
-			y = model_gene_df['EXPRESSION ('+current_gene+')']
+			X = model_gene_df_train.drop(['EXPRESSION ('+current_gene+')'],1)
+			y = model_gene_df_train['EXPRESSION ('+current_gene+')']
 			
 			# Add an intercept to our model 
 			X = sm.add_constant(X)
@@ -644,7 +667,187 @@ def feature_selection(gene_set, n_data_matrix, type):
 			coeff_df_filtered = coeff_df_ordered.loc[coeff_df_ordered['coefficient'] != 0.0]
 		   
 			# Export the list of columns selected in a .txt file
-			features_selected = (coeff_df_filtered.feature.unique()).tolist()
+			columns_selected_1 = (coeff_df_filtered.feature.unique()).tolist()
+			
+			
+			# CASE 2 ---------------------------------------------------------------------------------------------------------
+			model_gene_df_train = model_gene_df_train2.copy()
+			model_gene_df_test = model_gene_df_test2.copy()
+			
+			# Select the best 'alpha' value in Lasso Regression:
+			
+			# Define the target and the predictors
+			X_train = np.array(model_gene_df_train.drop(['EXPRESSION ('+current_gene+')'],1))
+			X_test = np.array(model_gene_df_test.drop(['EXPRESSION ('+current_gene+')'],1))
+			y_train = np.array(model_gene_df_train['EXPRESSION ('+current_gene+')'])
+			y_test = np.array(model_gene_df_test['EXPRESSION ('+current_gene+')'])
+			
+			# Create lasso regression with multiple possible alpha values
+			regr_cv = LassoCV(alphas=[0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 1, 2, 5, 10], cv=5)
+			
+			# Fit the linear regression
+			model_cv = regr_cv.fit(X_train, y_train)
+			
+			# Extract the best alpha value
+			best_alpha = model_cv.alpha_
+			
+			# Execute the LASSO regression according to the selected 'alpha' to select the most relevant fetaures:
+			
+			# Define the features (predictors X) and the target (label y)
+			X = model_gene_df_train.drop(['EXPRESSION ('+current_gene+')'],1)
+			y = model_gene_df_train['EXPRESSION ('+current_gene+')']
+			
+			# Add an intercept to our model 
+			X = sm.add_constant(X)
+
+			# Define the regression object and fit the model
+			lr_model = sm.OLS(y, X).fit_regularized(alpha=best_alpha, L1_wt=1)
+
+			# Extract the coefficients assigned to each feature and select only the features with a coefficient not equal to zero
+			coeff = lr_model.params
+			coeff_df = pd.DataFrame({'feature':coeff.index, 'coefficient':coeff.values})
+			coeff_df = coeff_df.sort_values(by=['coefficient'], ascending=[False])
+			coeff_df_ordered = coeff_df[['feature','coefficient']].copy()
+			coeff_df_filtered = coeff_df_ordered.loc[coeff_df_ordered['coefficient'] != 0.0]
+		   
+			# Export the list of columns selected in a .txt file
+			columns_selected_2 = (coeff_df_filtered.feature.unique()).tolist()
+			
+			
+			# CASE 3 ---------------------------------------------------------------------------------------------------------
+			model_gene_df_train = model_gene_df_train3.copy()
+			model_gene_df_test = model_gene_df_test3.copy()
+			
+			# Select the best 'alpha' value in Lasso Regression:
+			
+			# Define the target and the predictors
+			X_train = np.array(model_gene_df_train.drop(['EXPRESSION ('+current_gene+')'],1))
+			X_test = np.array(model_gene_df_test.drop(['EXPRESSION ('+current_gene+')'],1))
+			y_train = np.array(model_gene_df_train['EXPRESSION ('+current_gene+')'])
+			y_test = np.array(model_gene_df_test['EXPRESSION ('+current_gene+')'])
+			
+			# Create lasso regression with multiple possible alpha values
+			regr_cv = LassoCV(alphas=[0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 1, 2, 5, 10], cv=5)
+			
+			# Fit the linear regression
+			model_cv = regr_cv.fit(X_train, y_train)
+			
+			# Extract the best alpha value
+			best_alpha = model_cv.alpha_
+			
+			# Execute the LASSO regression according to the selected 'alpha' to select the most relevant fetaures:
+			
+			# Define the features (predictors X) and the target (label y)
+			X = model_gene_df_train.drop(['EXPRESSION ('+current_gene+')'],1)
+			y = model_gene_df_train['EXPRESSION ('+current_gene+')']
+			
+			# Add an intercept to our model 
+			X = sm.add_constant(X)
+
+			# Define the regression object and fit the model
+			lr_model = sm.OLS(y, X).fit_regularized(alpha=best_alpha, L1_wt=1)
+
+			# Extract the coefficients assigned to each feature and select only the features with a coefficient not equal to zero
+			coeff = lr_model.params
+			coeff_df = pd.DataFrame({'feature':coeff.index, 'coefficient':coeff.values})
+			coeff_df = coeff_df.sort_values(by=['coefficient'], ascending=[False])
+			coeff_df_ordered = coeff_df[['feature','coefficient']].copy()
+			coeff_df_filtered = coeff_df_ordered.loc[coeff_df_ordered['coefficient'] != 0.0]
+		   
+			# Export the list of columns selected in a .txt file
+			columns_selected_3 = (coeff_df_filtered.feature.unique()).tolist()
+			
+			
+			# CASE 4 ---------------------------------------------------------------------------------------------------------
+			model_gene_df_train = model_gene_df_train4.copy()
+			model_gene_df_test = model_gene_df_test4.copy()
+			
+			# Select the best 'alpha' value in Lasso Regression:
+			
+			# Define the target and the predictors
+			X_train = np.array(model_gene_df_train.drop(['EXPRESSION ('+current_gene+')'],1))
+			X_test = np.array(model_gene_df_test.drop(['EXPRESSION ('+current_gene+')'],1))
+			y_train = np.array(model_gene_df_train['EXPRESSION ('+current_gene+')'])
+			y_test = np.array(model_gene_df_test['EXPRESSION ('+current_gene+')'])
+			
+			# Create lasso regression with multiple possible alpha values
+			regr_cv = LassoCV(alphas=[0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 1, 2, 5, 10], cv=5)
+			
+			# Fit the linear regression
+			model_cv = regr_cv.fit(X_train, y_train)
+			
+			# Extract the best alpha value
+			best_alpha = model_cv.alpha_
+			
+			# Execute the LASSO regression according to the selected 'alpha' to select the most relevant fetaures:
+			
+			# Define the features (predictors X) and the target (label y)
+			X = model_gene_df_train.drop(['EXPRESSION ('+current_gene+')'],1)
+			y = model_gene_df_train['EXPRESSION ('+current_gene+')']
+			
+			# Add an intercept to our model 
+			X = sm.add_constant(X)
+
+			# Define the regression object and fit the model
+			lr_model = sm.OLS(y, X).fit_regularized(alpha=best_alpha, L1_wt=1)
+
+			# Extract the coefficients assigned to each feature and select only the features with a coefficient not equal to zero
+			coeff = lr_model.params
+			coeff_df = pd.DataFrame({'feature':coeff.index, 'coefficient':coeff.values})
+			coeff_df = coeff_df.sort_values(by=['coefficient'], ascending=[False])
+			coeff_df_ordered = coeff_df[['feature','coefficient']].copy()
+			coeff_df_filtered = coeff_df_ordered.loc[coeff_df_ordered['coefficient'] != 0.0]
+		   
+			# Export the list of columns selected in a .txt file
+			columns_selected_4 = (coeff_df_filtered.feature.unique()).tolist()
+			
+			
+			# CASE 5 ---------------------------------------------------------------------------------------------------------
+			model_gene_df_train = model_gene_df_train5.copy()
+			model_gene_df_test = model_gene_df_test5.copy()
+			
+			# Select the best 'alpha' value in Lasso Regression:
+			
+			# Define the target and the predictors
+			X_train = np.array(model_gene_df_train.drop(['EXPRESSION ('+current_gene+')'],1))
+			X_test = np.array(model_gene_df_test.drop(['EXPRESSION ('+current_gene+')'],1))
+			y_train = np.array(model_gene_df_train['EXPRESSION ('+current_gene+')'])
+			y_test = np.array(model_gene_df_test['EXPRESSION ('+current_gene+')'])
+			
+			# Create lasso regression with multiple possible alpha values
+			regr_cv = LassoCV(alphas=[0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 1, 2, 5, 10], cv=5)
+			
+			# Fit the linear regression
+			model_cv = regr_cv.fit(X_train, y_train)
+			
+			# Extract the best alpha value
+			best_alpha = model_cv.alpha_
+			
+			# Execute the LASSO regression according to the selected 'alpha' to select the most relevant fetaures:
+			
+			# Define the features (predictors X) and the target (label y)
+			X = model_gene_df_train.drop(['EXPRESSION ('+current_gene+')'],1)
+			y = model_gene_df_train['EXPRESSION ('+current_gene+')']
+			
+			# Add an intercept to our model 
+			X = sm.add_constant(X)
+
+			# Define the regression object and fit the model
+			lr_model = sm.OLS(y, X).fit_regularized(alpha=best_alpha, L1_wt=1)
+
+			# Extract the coefficients assigned to each feature and select only the features with a coefficient not equal to zero
+			coeff = lr_model.params
+			coeff_df = pd.DataFrame({'feature':coeff.index, 'coefficient':coeff.values})
+			coeff_df = coeff_df.sort_values(by=['coefficient'], ascending=[False])
+			coeff_df_ordered = coeff_df[['feature','coefficient']].copy()
+			coeff_df_filtered = coeff_df_ordered.loc[coeff_df_ordered['coefficient'] != 0.0]
+		   
+			# Export the list of columns selected in a .txt file
+			columns_selected_5 = (coeff_df_filtered.feature.unique()).tolist()
+			
+			
+			# Export the list of columns selected in a .txt file
+			features_selected = list(set(columns_selected_1) & set(columns_selected_2) & set(columns_selected_3) & set(columns_selected_4) & set(columns_selected_5))
 			with open ('./5_Data_Analysis/'+gene_set+'/FeatureSelection/M'+model+'/Features - Gene '+gene_ID+' ['+current_gene+'].txt', 'w') as fp:
 				features_selected_sorted = sorted(features_selected)
 				for i in features_selected_sorted:

@@ -4,9 +4,9 @@ In this phase all the data arranged in the previous phases are processed accordi
 
 Each model is built subsequently executing the following two steps:
 
-	* a **FEATURE SELECTION** process that allows you to select the best subset of features for the model gene, removing inputs that are known to be non-significant for the regulation of the model gene expression beforehand. In particular, two different types of feature selection are available:
+	* a **FEATURE SELECTION** process that allows you to select the best subset of features for the model gene, removing inputs that are known to be non-significant for the regulation of the model gene expression beforehand. In particular, for each gene of interest and for each input matrix, the feature selection process is performed five times: in order to reduce the bias, the set of TCGA data samples is randomly split into five, possibly equal, groups of samples which are used to create five different testing sets (this partition is indeed performed only once at the beginning of the data analysis, and then the same five subsets of samples are used for processing all the genes. Therefore, feature selection is performed five times, one for each generated testing set (using the remaining samples as training set), according to a *k-fold cross-validation* process, setting *k=5*. The intersection of the five sets of extracted features is computed to obtain the final selected features for the current gene in the current matrix. Two different types of feature selection are available:
 	
-		* **foreward feature selection**, where for each input matrix, the feature selection is performed five times: in order to reduce the bias, the set of TCGA data samples is randomly split into five, possibly equal, groups of samples which are used to create five different testing sets (this partition is indeed performed only once at the beginning of the data analysis, and then the same five subsets of samples are used for processing all the genes. Therefore, feature selection is performed five times, one for each generated testing set (using the remaining samples as training set), according to a *k-fold cross-validation* process, setting *k=5*. The intersection of the five sets of extracted features is computed to obtain the final selected features for the current gene in the current matrix. In this case, three different foreward feature selection methods can be implemented by the library, according to how features selected in the previous steps are treated:
+		* **foreward feature selection**, for which three different methods can be implemented by the library, according to how features selected in the previous steps are treated:
 		
 			* the default incremental method (**type='ffs_default'**), which implements the forewad feature selection retrieving in each step (i.e. for each data matrix) only the features extracted as most relevant in the previous step and re-evaluating them with all the new features in the current matrix in a new feature selection process;
 			
@@ -14,7 +14,7 @@ Each model is built subsequently executing the following two steps:
 			
 			* a complete method (**type='all'**)which implements the foreward feature selection considering all the features in the current matrix , regardless of the features selected in the previous step. This method is useful when you want to analyze all the potential regulatory features all together, without any previous pre-selection process (e.g. this is extremely useful if applied to M5, which contains the whole set of candidate regulatory features). However, you have to pay attention to this type of selection process, because the computational complexity will inevitably be affected.
 
-		* **Lasso**, where for each input matrix, the features selected are the ones with a coefficient different from zero, according to the Lasso algorithm.
+		* **Lasso**, where the features selected are the ones with a coefficient different from zero, according to the Lasso algorithm.
 
 |
 
@@ -42,15 +42,90 @@ However, since it is possible to introduce an alteration in the results due to t
 
 The set of fuctions used to perform the analysis is the following:
 
-..  automodule:: genereg.FeatureSelection
-    :members:
+``feature_selection(gene_set, n_data_matrix, type)``
 
+	The FEATURE_SELECTION operation executes the feature selection procedure per gene set and per data matrix, according to the specified type of selection: it takes as input the name of the gene set to consider and the number of the model to build (i.e., the number of the data matrix to consider) and performs the specified feature selection for all the genes of interest in the selected set. Results are exported locally either in Excel or text files.
 	
-..  automodule:: genereg.LinearRegression
-    :members:
-
+	**Parameters:**
 	
-..  automodule:: genereg.SummaryResults
-    :members:
+	* *gene_set*: the set of genes of interest to analyze
+	
+	* *n_data_matrix*: number identifying the data matrix to analyze (only 2,3 and 5 values are permitted)
+	
+	* *type*: the type of feature selection to perform (possibile values are {'ffs_default','ffs_no_reval','lasso','all'})
+	
+	Example::
 
+		import genereg as gr
+		gr.FeatureSelection.feature_selection(gene_set='DNA_REPAIR', n_data_matrix=2, type=ffs_default)
+		gr.FeatureSelection.feature_selection(gene_set='DNA_REPAIR', n_data_matrix=3, type=ffs_default)
+		gr.FeatureSelection.feature_selection(gene_set='DNA_REPAIR', n_data_matrix=5, type=ffs_default)
+
+|
+
+``linear_regression(gene_set, n_data_matrix)``
+
+	The LINEAR_REGRESSION operation executes the linear regression analysis per gene set and per data matrix, considering as inputs of the model only the features selected during the previous feature selection procedure. Results are exported locally either in Excel or text files.
+	
+	**Parameters:**
+	
+	* *gene_set*: the set of genes of interest to analyze
+	
+	* *n_data_matrix*: number identifying the data matrix to analyze (only 2,3 and 5 values are permitted)
+	
+	Example::
+
+		import genereg as gr
+		gr.LinearRegression.linear_regression(gene_set='DNA_REPAIR', n_data_matrix=2)
+		gr.LinearRegression.linear_regression(gene_set='DNA_REPAIR', n_data_matrix=3)
+		gr.LinearRegression.linear_regression(gene_set='DNA_REPAIR', n_data_matrix=5)
+
+|
+
+``summarize_reg(gene_set, n_data_matrix)``
+
+	The SUMMARIZE_REG operation summarizes all the data analysis results, by collecting them in convenient tables that exported locally in Excel files.
+	
+	**Parameters:**
+	
+	* *gene_set*: the set of genes of interest to summarize
+	
+	* *n_data_matrix*: number identifying the data matrix to summarize (only 2,3 and 5 values are permitted)
+	
+	Example::
+
+		import genereg as gr
+		gr.SummaryResults.summarize_reg(gene_set='DNA_REPAIR', n_data_matrix=2)
+		gr.SummaryResults.summarize_reg(gene_set='DNA_REPAIR', n_data_matrix=3)
+		gr.SummaryResults.summarize_reg(gene_set='DNA_REPAIR', n_data_matrix=5)
+
+|
+
+``summarize_r2(gene_set)``
+
+	The SUMMARIZE_R2 operation summarizes R2 and Adjusted R2 scores for each target gene in each regression model, storing them locally in a single Excel file.
+	
+	**Parameters:**
+	
+	* *gene_set*: the set of genes of interest to summarize
+	
+	Example::
+
+		import genereg as gr
+		gr.SummaryResults.summarize_r2(gene_set='DNA_REPAIR')
+
+|
+
+``best_genes(gene_set)``
+
+	The BEST_GENES operation collects the target genes with the best linear fit (Adjusted R2 >= 0.6) in the three regression models, storing them locally in a single Excel file.
+	
+	**Parameters:**
+	
+	* *gene_set*: the set of genes of interest to summarize
+	
+	Example::
+
+		import genereg as gr
+		gr.SummaryResults.best_genes(gene_set='DNA_REPAIR')
 	
