@@ -19,7 +19,3 @@ Welcome to genereg's documentation!
    tcga
    datamatrixes
    datanalysis
-   
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`

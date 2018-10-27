@@ -2,28 +2,28 @@ Introduction
 ============================================
 This library implements a method for analyzing the regulation systems of target genes in a specific genetic pathology, such as cancer. Adopting a linear regression approach, it builds a predictive model for the regulation of target genes expression, in order to identify the relevant features that better explain the regulation of each gene of interest within patients under analysis.
 
-The regulation system of each target gene is analyzed singularly and independently, by assessing the effect of some specific factors on its expression:
+The regulation system of each target gene is analyzed singularly and independently, by assessing the effect of some specific factors on its expression (regulatory features):
 	
 	* **DNA methylation** (more specifically, the mean promotorial methylation level of the target gene);
 	
-	* **expression of target genes** belonging to the **same gene set** as the model gene;
+	* **expression of the genes** belonging to the **same gene set** (e.g. pathway) as the target gene;
 	
-	* **expression of target genes** belonging to the **other gene sets** with respect to the model gene;
+	* **expression of the genes** belonging to the **other gene sets** (e.g. pathways) with respect to the target gene;
 	
 	* **expression of candidate regulatory genes** (i.e. those genes encoding for transcription factors having binding sites located in the promoter regions of genes of interest).
 
-Methylation, gene expression and transcription factors data of interest are extracted from the `GMQL <http://gmql.eu/gmql-rest/>`_ system, using the Python library `PyGMQL <https://pygmql.readthedocs.io/en/latest/index.html>`_.
+Methylation, gene expression and transcription factor data of interest are extracted from the `GMQL <http://gmql.eu/gmql-rest/>`_ system, using the Python library `PyGMQL <https://pygmql.readthedocs.io/en/latest/index.html>`_.
 ENCODE and TCGA are the datasets currently available on GMQL for this type of data; so, this method can be used to investigate all the 33 types of cancer analyzed by TCGA:
 
 .. image:: images/tcgatumors.png
 
 
-This method allows to analyze the beavior of specific human genes within cancer patients, investigating the biological relationships which hold among each other and the effect that heterogeneous regulatory elements have on their expression.
+This method allows to analyze the behavior of specific human genes within cancer patients, investigating the biological relationships which hold among each other and the effect that heterogeneous regulatory elements have on their expression.
 
-The matter is understanding the relationships between the activity of each target gene and the genes belonging either to the same gene set or to the other relevant sets, and the relationships between all such target genes and their candidate regulatory genes: this may lead to identify common or frequent regulators with a key role in the regulation systems of the genes of interest, eventually predicting their potential oncogenic role. Whenever a correlation exists, an assessment of the potential influence that the gene methylation may have on its expression is also made.
+The matter is understanding the relationships between the activity of each target gene and the genes belonging either to the same gene set or to the other gene sets, and the relationships between all such target genes and their candidate regulatory genes: this may lead to identify common or frequent regulators with a key role in the regulation systems of the genes of interest, eventually predicting their potential oncogenic role. Whenever a correlation exists, an assessment of the potential influence that the gene methylation may have on its expression is also made.
 
-Analyzing all the features is usually extremely heavy from a computational standpoint, resulting in a high computational complexity. For this reason, in order to make this analysis sustainable within reasonable time and using standard computational resources, the approach implemented in this library does not analyze all the existing correlations among target genes and their regulatory features, but it identifies those associations that best contribute to the target genes expression regulation.
-The results are focused by design to the **best-predicting sets of features**, leaving out potential regulators with important biological functions, but with an extremely low predictive power with respect to the expression of the target gene.
+Analyzing all the considered regulatory features is usually extremely heavy from a computational standpoint, resulting in a high computational complexity. For this reason, in order to make this analysis sustainable within reasonable time and using standard computational resources, the approach implemented in this library does not analyze all the existing correlations among target genes and all their regulatory features, but it identifies those associations that best contribute to the target genes expression regulation.
+The results are focused by design to the **best-predicting sets of features**, leaving out potential regulators in case with important biological functions, but with an extremely low predictive power with respect to the expression of the target gene.
 
 The main phases that are performed during the complete execution of this method are the following:
 
@@ -43,8 +43,8 @@ The next chapters of the documentation deeply explain the rationale behind each 
 
 |
 
-This method has been developed and validated at first for assessing the behavior of 177 target genes belonging to three relavant pathways (DNA_REPAIR, STEM_CELLS and GLUCOSE_METABOLISM) for the ovarian cancer, more specifically the *Ovarian Serous Cystadenocarcinoma*.
-All the examples in this documentation refers to this specific ovarian cancer case.
+This method has been developed and validated at first for assessing the behavior of 177 target genes belonging to three relevant pathways (DNA_REPAIR, STEM_CELLS and GLUCOSE_METABOLISM) for the ovarian cancer, more specifically the *Ovarian Serous Cystadenocarcinoma*.
+All the examples in this documentation refer to this specific ovarian cancer case.
 
 You can see here a sample Python script for using the library::
 

@@ -3,10 +3,10 @@ TCGA Data Extraction
 The second data extraction phase consists in extracting the methylation level (expressed as the **mean** of its *beta_values*) and the gene expression value of each target gene and for each data sample under analysis.
 These types of data are currently available in GMQL for the TCGA dataset, which is the one that is used in this method.
 
-The queries for extracting methylation and gene expression data of interest are implemented acconding to the `PyGMQL <https://pygmql.readthedocs.io/en/latest/index.html>`_ syntax and data are retrieved from public datasets available on the `GMQL <http://gmql.eu/gmql-rest/>`_
+The queries for extracting methylation and gene expression data of interest are implemented according to the `PyGMQL <https://pygmql.readthedocs.io/en/latest/index.html>`_ syntax and data are retrieved from public datasets available on the `GMQL <http://gmql.eu/gmql-rest/>`_
 system.
 
-Only common data samples having both methylation and expression values in TCGA are selected. Each data sample corresponds to a specific patient, which is here identified by a unique string, called *Sample Barcode*, with the following structure: **TCGA-xx-xxxx-xxx**.
+Only common data samples having both methylation and expression values in TCGA are selected. Each data sample corresponds to a specific patient, which is here identified by a unique string, called *TCGA Aliquot*, with the following structure: **TCGA-xx-xxxx-xxx**.
 
 
 -------------------------------------
@@ -25,9 +25,9 @@ Extraction of Methylation values
 	
 	* *gencode_version*: number representing the GENCODE genomic annotations to use (currently, for assembly GRCh38, versions 22, 24 and 27 can be used)
 	
-	* *methyl_upstream*: number of bases upstream the gene TSS to consider for the extraction of methylation sites of interest
+	* *methyl_upstream*: number of bases upstream each gene TSS to consider for the extraction of methylation sites of interest
 	
-	* *methyl_downstream*: number of bases downstream the gene TSS to consider for the extraction of methylation sites of interest
+	* *methyl_downstream*: number of bases downstream each gene TSS to consider for the extraction of methylation sites of interest
 	
 	**Return:** a Pandas dataframe
 	

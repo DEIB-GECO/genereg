@@ -2,12 +2,12 @@ Initialization
 ============================================
 
 The library automatically creates directories for storing all the intermediate and final results in the current workspace of the user (i.e. the directory Python it is executed in), in order to be able to use them during the execution, when needed.
-For this reason, it is advised to execute Python direclty within the directory you want the results to be saved in (let us call it "*library workspace*") and it is highly recommended not to move any file until the whole process has been fully executed, that is all the functions of this library have been run and the whole analysis procedure has been perfomed.
+For this reason, it is advised to execute Python directly within the directory you want the results to be saved in (let us call it "*library workspace*") and it is highly recommended not to move any file until the whole process has been fully executed, that is all the functions of this library have been run and the whole analysis procedure has been performed.
 
 ------------------
 Genes of Interest
 ------------------
-The first thing you need to do is defining your genes of interest for the pathology you want to analyze: these are the target genes whose regulation systems will be assesed during the analysis. Genes belonging to one or multiple gene sets are supported. So, you can analyze genes from different gene sets of your interest, by simply specifying the name of each set, as explained below.
+The first thing you need to do is defining your genes of interest for the pathology you want to analyze: these are the target genes whose regulation systems will be assessed during the analysis. Genes belonging to one or multiple gene sets are supported. So, you can analyze genes from different gene sets of your interest, by simply specifying the name of each set, as explained below.
 
 Here it is how this list of genes has to be structured:
     
@@ -15,7 +15,7 @@ Here it is how this list of genes has to be structured:
 	
 		* GENE_SYMBOL is the official gene name
 
-		* ENTREZ_GENE_ID is the numerical ID associated with the gene
+		* ENTREZ_GENE_ID is the numerical ID of the Entrez Gene database associated with the gene
 
 		* GENE_SET is the name of the gene set the corresponding gene belongs to 
 
