@@ -1,7 +1,7 @@
 Initialization
 ============================================
 
-The library automatically creates directories for storing all the intermediate and final results in the current workspace of the user (i.e. the directory Python it is executed in), in order to be able to use them during the execution, when needed.
+The library automatically creates directories for storing all the intermediate and final results in the current workspace of the user (./), i.e. the directory Python it is executed in, in order to be able to use them during the execution, when needed.
 For this reason, it is advised to execute Python directly within the directory you want the results to be saved in (let us call it "*library workspace*") and it is highly recommended not to move any file until the whole process has been fully executed, that is all the functions of this library have been run and the whole analysis procedure has been performed.
 
 ------------------
@@ -40,6 +40,10 @@ You have to execute the following function in order to initialize the library an
 		gr.Initialize.library_init()
 
 This function builds the complete directory tree for storing files and results in the *library workspace*, it downloads and saves the complete lists of Transcription Factors (from both UniProt and ENCODE) and human genes (from HGNC) to be used for the **Gene - TFs Mapping** phase, and it creates some useful soon-to-be-used files, starting from the "*Genes_of_Interest.xlsx*" table.
+Here it is how the *library workspace* is structured:
+
+.. image:: images/directory_tree.png
+ 
 
 |
 

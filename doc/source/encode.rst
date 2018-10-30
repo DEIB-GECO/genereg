@@ -26,6 +26,10 @@ Extraction of Transcription Factors
 	
 	**Return:** a Python dictionary
 	
+	**INPUT FILES:** Genes_of_Interest.xlsx from *./*
+	
+	**OUTPUT_FILES:** `dict_GeneTF.p <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/dict_GeneTF.p>`_, `dict_GeneTF.xlsx <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/dict_GeneTF.xlsx>`_, `dict_GeneTF.txt <https://raw.githubusercontent.com/Kia23/genereg/master/DATA/sample_files/dict_GeneTF.txt>`_ (click on the files to download an example)
+	
 	Example::
 
 		import genereg as gr
@@ -42,6 +46,10 @@ Identification of Regulatory Genes
 	The EXTRACT_REGULATORY_GENES operation extracts from the set of Transcription Factors associated with a gene, the list of its candidate regulatory genes, i.e., the genes that encode for those TFs. Intermediate results files are exported locally during the execution of the function, while the final set of transcription factors is returned as a Python dictionary (dict_RegulGenes.p), where each target gene (set as key) is associated with the list of its candidate regulatory genes (set as value).
 	
 	**Return:** a Python dictionary
+	
+	**INPUT FILES:** Genes Mapping.xlsx from *./0_Genes_Mapping/*, dict_GeneTF.p from *./1_Transcription_Factors/*
+	
+	**OUTPUT_FILES:** `dict_RegulGenes.p <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/dict_RegulGenes.p>`_, `dict_RegulGenes.xlsx <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/dict_RegulGenes.xlsx>`_, `dict_RegulGenes.txt <https://raw.githubusercontent.com/Kia23/genereg/master/DATA/sample_files/dict_RegulGenes.txt>`_, `Full TFs - RegulatoryGenes SUMMARY Table.xlsx <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/Full%20TFs%20-%20RegulatoryGenes%20SUMMARY%20Table.xlsx>`_ (click on the files to download an example)
 	
 	Example::
 

@@ -54,6 +54,10 @@ The set of functions used to perform the analysis is the following:
 	
 	* *type*: the type of feature selection to perform (possible values are {'ffs_default', 'ffs_no_reval', 'lasso', 'all'})
 	
+	**INPUT FILES:** Genes_of_Interest.xlsx from *./*, data matrixes from *./4_Data_Matrix_Construction/*
+	
+	**OUTPUT_FILES:** `Features - Gene ID [SYM].txt <https://raw.githubusercontent.com/Kia23/genereg/master/DATA/sample_files/Features%20-%20Gene%20672%20%5BBRCA1%5D.txt>`_, `Feature Selection SUMMARY.xlsx <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/Feature%20Selection%20SUMMARY.xlsx>`_ (click on the files to download an example)
+	
 	Example::
 
 		import genereg as gr
@@ -72,6 +76,10 @@ The set of functions used to perform the analysis is the following:
 	* *gene_set*: the name of the set of genes of interest to analyze
 	
 	* *n_data_matrix*: number identifying the data matrix to analyze (only 2, 3 and 5 values are permitted)
+	
+	**INPUT FILES:** Genes_of_Interest.xlsx from *./*, data matrixes from *./4_Data_Matrix_Construction/*, features selected from *./5_Data_Analysis/.../FeatureSelection/M.../*
+	
+	**OUTPUT_FILES:** `LinReg Summary - Gene ID [SYM].txt <https://raw.githubusercontent.com/Kia23/genereg/master/DATA/sample_files/LinReg%20Summary%20-%20Gene%20672%20%5BBRCA1%5D.txt>`_, `Coefficients (model) - Gene Gene ID [SYM].xlsx <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/Coefficients%20(M3)%20-%20Gene%20672%20%5BBRCA1%5D.xlsx>`_, `Confidence Intervals (model) - Gene Gene ID [SYM].xlsx <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/Confidence%20Intervals%20(M3)%20-%20Gene%20672%20%5BBRCA1%5D.xlsx>`_, `Correlation Matrix (model) - Gene Gene ID [SYM].xlsx <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/Correlation%20Matrix%20(M3)%20-%20Gene%20672%20%5BBRCA1%5D.xlsx>`_, `Linear Regression R2 SCORES.xlsx <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/Linear%20Regression%20R2%20SCORES.xlsx>`_ (click on the files to download an example)
 	
 	Example::
 
@@ -92,6 +100,10 @@ The set of functions used to perform the analysis is the following:
 	
 	* *n_data_matrix*: number identifying the data matrix to summarize (only 2, 3 and 5 values are permitted)
 	
+	**INPUT FILES:** Genes_of_Interest.xlsx from *./*, dict_RegulGenes.p from *./2_Regulatory_Genes/*, ata matrixes from *./4_Data_Matrix_Construction/*, Feature Selection SUMMARY.xlsx from *./5_Data_Analysis/.../FeatureSelection/M.../*, Linear Regression R2 SCORES.xlsx from *./5_Data_Analysis/.../LinearRegression/M.../*
+	
+	**OUTPUT_FILES:** `Feature Selection and Linear Regression.xlsx <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/Feature%20Selection%20and%20Linear%20Regression.xlsx>`_, `Relevant Features - Gene ID [SYM].xlsx <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/Relevant%20Features%20-%20Gene%20672%20%5BBRCA1%5D.xlsx>`_, `Order of Features Selected.xlsx <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/Order%20of%20Features%20Selected.xlsx>`_ (click on the files to download an example)
+	
 	Example::
 
 		import genereg as gr
@@ -109,6 +121,10 @@ The set of functions used to perform the analysis is the following:
 	
 	* *gene_set*: the name of the set of genes of interest to summarize
 	
+	**INPUT FILES:** Genes_of_Interest.xlsx from *./*, Feature Selection and Linear Regression.xlsx from *./5_Data_Analysis/.../*
+	
+	**OUTPUT_FILES:** `R2 and Adj.R2 Scores.xlsx <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/R2%20and%20Adj.R2%20Scores.xlsx>`_ (click on the file to download an example)
+	
 	Example::
 
 		import genereg as gr
@@ -123,6 +139,10 @@ The set of functions used to perform the analysis is the following:
 	**Parameters:**
 	
 	* *gene_set*: the name of the set of genes of interest to summarize
+	
+	**INPUT FILES:** Genes_of_Interest.xlsx from *./*, R2 and Adj.R2 Scores.xlsx from *./5_Data_Analysis/.../*
+	
+	**OUTPUT_FILES:** `Best Genes.xlsx <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/Best%20Genes.xlsx>`_ (click on the file to download an example)
 	
 	Example::
 

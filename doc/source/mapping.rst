@@ -8,6 +8,10 @@ As comprehensive information on human genes is available online through multiple
 	
 	**Return:** a Pandas dataframe
 	
+	**INPUT FILES:** ENCODE.tsv, UNIPROT.tsv, HGNC.tsv from *./0_Genes_Mapping/DATA/*
+	
+	**OUTPUT_FILES:** Genes Mapping.xlsx (download an example `here <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/Genes%20Mapping.xlsx>`_)
+	
 	Example::
 
 		import genereg as gr

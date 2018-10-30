@@ -31,6 +31,10 @@ Extraction of Methylation values
 	
 	**Return:** a Pandas dataframe
 	
+	**INPUT FILES:** Genes_of_Interest.xlsx from *./*
+	
+	**OUTPUT_FILES:** `Methylation Values.xlsx <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/Methylation%20Values.xlsx>`_, `Common Aliquots.txt <https://raw.githubusercontent.com/Kia23/genereg/master/DATA/sample_files/Common%20Aliquots.txt>`_, `dict_test_split.p <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/dict_test_split.p>`_ (click on the files to download an example)
+	
 	Example::
 
 		import genereg as gr
@@ -67,6 +71,10 @@ Extraction of Gene Expression values
 	* *gencode_version*: number representing the GENCODE genomic annotations to use (currently, for assembly GRCh38, versions 22, 24 and 27 can be used)
 	
 	**Return:** two Pandas dataframes
+	
+	**INPUT FILES:** Genes_of_Interest.xlsx from *./*, dict_RegulGenes.p from *./2_Regulatory_Genes/*, Genes Mapping.xlsx from *./0_Genes_Mapping/*
+	
+	**OUTPUT_FILES:** `Gene Expression - InterestGenes.xlsx <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/Gene%20Expression%20-%20InterestGenes.xlsx>`_, `Gene Expression - RegulatoryGenes.xlsx <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/Gene%20Expression%20-%20RegulatoryGenes.xlsx>`_ (click on the files to download an example)
 	
 	Example::
 

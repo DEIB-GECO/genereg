@@ -27,6 +27,10 @@ Here it is the set of functions used to build the five data matrixes:
 	
 	**Return:** a Python dictionary
 	
+	**INPUT FILES:** Genes_of_Interest.xlsx from *./*, Methylation Values.xlsx from *./3_TCGA_Data/Methylation/*, Gene Expression - InterestGenes.xlsx from *./3_TCGA_Data/Gene_Expression/*
+	
+	**OUTPUT_FILES:** dict_model_v1.p, `Gene ID [SYM] (gene_set) - Model_v1.xlsx <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/Gene%20672%20%5BBRCA1%5D%20(DNA_REPAIR)%20-%20Model_v1.xlsx>`_ (click on the Excel file to download a sample matrix for a sample)
+	
 	Example::
 
 		import genereg as gr
@@ -39,6 +43,10 @@ Here it is the set of functions used to build the five data matrixes:
 	The CREATE_M2 operation builds the second data matrix for each target gene of interest, adding to the first matrix data about the expression of candidate regulatory genes of each gene of interest. One data matrix for each target gene is created and exported locally in as many Excel files as the considered genes; while the whole set of M2 matrixes is returned as a Python dictionary (dict_model_v2.p), where each target gene (set as key) is associated with a Pandas dataframe containing the data for its M2 matrix (set as value). 
 	
 	**Return:** a Python dictionary
+	
+	**INPUT FILES:** Genes_of_Interest.xlsx from *./*, dict_RegulGenes.p from *./2_Regulatory_Genes/*, Gene Expression - RegulatoryGenes.xlsx from *./3_TCGA_Data/Gene_Expression/*, dict_model_v1.p from *./4_Data_Matrix_Construction/Model1/*
+	
+	**OUTPUT_FILES:** dict_model_v2.p, `Gene ID [SYM] (gene_set) - Model_v2.xlsx <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/Gene%20672%20%5BBRCA1%5D%20(DNA_REPAIR)%20-%20Model_v2.xlsx>`_ (click on the Excel file to download a sample matrix for a sample)
 	
 	Example::
 
@@ -53,6 +61,10 @@ Here it is the set of functions used to build the five data matrixes:
 	
 	**Return:** a Python dictionary
 	
+	**INPUT FILES:** Genes_of_Interest.xlsx from *./*, dict_RegulGenes.p from *./2_Regulatory_Genes/*, Gene Expression - RegulatoryGenes.xlsx from *./3_TCGA_Data/Gene_Expression/*, dict_model_v2.p from *./4_Data_Matrix_Construction/Model2/*
+	
+	**OUTPUT_FILES:** dict_model_v3.p, `Gene ID [SYM] (gene_set) - Model_v3.xlsx <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/Gene%20672%20%5BBRCA1%5D%20(DNA_REPAIR)%20-%20Model_v3.xlsx>`_ (click on the Excel file to download a sample matrix for a sample)
+	
 	Example::
 
 		import genereg as gr
@@ -66,6 +78,10 @@ Here it is the set of functions used to build the five data matrixes:
 	
 	**Return:** a Python dictionary
 	
+	**INPUT FILES:** Genes_of_Interest.xlsx from *./*, Gene Expression - InterestGenes.xlsx from *./3_TCGA_Data/Gene_Expression/*, dict_model_v3.p from *./4_Data_Matrix_Construction/Model3/*
+	
+	**OUTPUT_FILES:** dict_model_v4.p, `Gene ID [SYM] (gene_set) - Model_v4.xlsx <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/Gene%20672%20%5BBRCA1%5D%20(DNA_REPAIR)%20-%20Model_v4.xlsx>`_ (click on the Excel file to download a sample matrix for a sample)
+	
 	Example::
 
 		import genereg as gr
@@ -78,6 +94,10 @@ Here it is the set of functions used to build the five data matrixes:
 	The CREATE_M5 operation builds the fifth data matrix for each target gene of interest, adding to the fourth matrix data about the expression of candidate regulatory genes of genes of interest belonging to the other gene sets with respect to the target gene. One data matrix for each target gene is created and exported locally in as many Excel files as the considered genes; while the whole set of M5 matrixes is returned as a Python dictionary (dict_model_v5.p), where each target gene (set as key) is associated with a Pandas dataframe containing the data for its M5 matrix (set as value).
 	
 	**Return:** a Python dictionary
+	
+	**INPUT FILES:** Genes_of_Interest.xlsx from *./*, dict_RegulGenes.p from *./2_Regulatory_Genes/*, Gene Expression - RegulatoryGenes.xlsx from *./3_TCGA_Data/Gene_Expression/*, dict_model_v4.p from *./4_Data_Matrix_Construction/Model4/*
+	
+	**OUTPUT_FILES:** dict_model_v5.p, `Gene ID [SYM] (gene_set) - Model_v5.xlsx <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/Gene%20672%20%5BBRCA1%5D%20(DNA_REPAIR)%20-%20Model_v5.xlsx>`_ (click on the Excel file to download a sample matrix for a sample)
 	
 	Example::
 
