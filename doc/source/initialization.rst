@@ -9,7 +9,7 @@ Genes of Interest
 ------------------
 The first thing you need to do is defining your genes of interest for the pathology you want to analyze: these are the target genes whose regulation systems will be assessed during the analysis. Genes belonging to one or multiple gene sets are supported. So, you can analyze genes from different gene sets of your interest, by simply specifying the name of each set, as explained below.
 
-Here it is how this list of genes has to be structured:
+Here, it is how this list of genes has to be structured:
     
 	* create an Excel file (.xlsx) with 3 columns ('GENE_SYMBOL', 'ENTREZ_GENE_ID', 'GENE_SET') and one row for each target gene
 	
@@ -40,7 +40,7 @@ You have to execute the following function in order to initialize the library an
 		gr.Initialize.library_init()
 
 This function builds the complete directory tree for storing files and results in the *library workspace*, it downloads and saves the complete lists of Transcription Factors (from both UniProt and ENCODE) and human genes (from HGNC) to be used for the **Gene - TFs Mapping** phase, and it creates some useful soon-to-be-used files, starting from the "*Genes_of_Interest.xlsx*" table.
-Here it is how the *library workspace* is structured:
+Here, it is how the *library workspace* is structured:
 
 .. image:: images/directory_tree.png
  
