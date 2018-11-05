@@ -2,7 +2,7 @@ Introduction
 ============================================
 This library implements a method for analyzing the regulation systems of target genes in a specific genetic pathology, such as cancer. Adopting a linear regression approach, it builds a predictive model for the regulation of target genes' expression, in order to identify the relevant features that better explain the regulation of each gene of interest within patients under analysis.
 
-The regulation system of each target gene is analyzed singularly and independently, by assessing the effect of some specific factors on its expression (regulatory features):
+The regulation system of each target gene is analyzed singularly and independently, by assessing the effect of some specific factors (regulatory features) on the expression of the target gene:
 	
 	* **DNA methylation** (more specifically, the mean promotorial methylation level of the target gene);
 	
