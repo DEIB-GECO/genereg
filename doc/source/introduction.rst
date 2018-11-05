@@ -18,16 +18,16 @@ ENCODE and TCGA are the datasets currently available on GMQL for this type of da
 .. image:: images/tcgatumors.png
 
 
-This method allows to analyze the behavior of specific human genes within cancer patients, investigating the biological relationships which hold among each other and the effect that heterogeneous regulatory elements have on their expression.
+This library allows to analyze the behavior of specific human genes within cancer patients, investigating the biological relationships which hold among each other and the effect that heterogeneous regulatory elements have on their expression.
 
-The matter is understanding the relationships between the activity of each target gene and the genes belonging either to the same gene set or to the other gene sets, and the relationships between all such target genes and their candidate regulatory genes: this may lead to identify common or frequent regulators with a key role in the regulation systems of the genes of interest, eventually predicting their potential oncogenic role. Whenever a correlation exists, an assessment of the potential influence that the gene methylation may have on its expression is also made.
+The matter is understanding the relationships between the activity of each target gene and that of the genes belonging either to the same gene set or to other gene sets, and the relationships between all such target genes and their candidate regulatory genes: this may lead to identify common or frequent regulators with a key role in the regulation systems of the genes of interest, eventually predicting their potential oncogenic role. Whenever a correlation exists, an assessment of the potential influence that the gene methylation may have on its expression is also made.
 
-Analyzing all the considered regulatory features is usually extremely heavy from a computational standpoint, resulting in a high computational complexity. For this reason, in order to make this analysis sustainable within reasonable time and using standard computational resources, the approach implemented in this library does not analyze all the existing correlations among target genes and all their regulatory features, but it identifies those associations that best contribute to the target genes expression regulation.
+Analyzing all the considered regulatory features is usually extremely heavy from a computational standpoint, resulting in a high computational complexity. For this reason, in order to make this analysis sustainable within reasonable time and using standard computational resources, the approach implemented in this library does not analyze all the existing correlations among any target gene and all its regulatory features, but it identifies those associations that best contribute to the expression regulation of the target gene.
 The results are focused by design to the **best-predicting sets of features**, leaving out potential regulators in case with important biological functions, but with an extremely low predictive power with respect to the expression of the target gene.
 
-The main phases that are performed during the complete execution of this method are the following:
+The main phases that are performed during the complete execution of this library are the following:
 
-	1) extraction of the Transcription Factors (TFs) binding to target genes promoters (from the ENCODE dataset);	
+	1) extraction of the Transcription Factors (TFs) binding to target genes' promoters (from the ENCODE dataset);	
 	
 	2) identification of candidate regulatory genes for each target gene;
 	
@@ -35,15 +35,15 @@ The main phases that are performed during the complete execution of this method 
 	
 	4) extraction of the expression values of each target gene (from TCGA data sample collecting information on patients affected by the tumor of interest);
 	
-	5) extracted data manipulation and storage into data matrixes to use as inputs for the data analysis;
+	5) extracted data manipulation and storage into data matrixes to be used as inputs for the following data analysis;
 	
-	6) data analysis process (feature selection + linear regression)
+	6) data analysis process (feature selection + linear regression).
 
-The next chapters of the documentation deeply explain the rationale behind each phase and how it is executed.
+The next chapters of the documentation thoroughly explain the rational behind each phase and how it is executed.
 
 |
 
-This method has been developed and validated at first for assessing the behavior of 177 target genes belonging to three relevant pathways (DNA_REPAIR, STEM_CELLS and GLUCOSE_METABOLISM) for the ovarian cancer, more specifically the *Ovarian Serous Cystadenocarcinoma*.
+This library has been developed and validated at first for assessing the behavior of 177 target genes belonging to three relevant pathways (DNA_REPAIR, STEM_CELLS and GLUCOSE_METABOLISM) for the ovarian cancer, more specifically the *Ovarian Serous Cystadenocarcinoma*.
 All the examples in this documentation refer to this specific ovarian cancer case.
 
 You can see here a sample Python script for using the library::
@@ -103,5 +103,5 @@ You can see here a sample Python script for using the library::
 	# [...]
 
 	
-**Note:** Changing the input parameters of each function above, you can easily execute the full method on data you are interested in.
+**Note:** Changing the input parameters of each function above, you can easily execute the full method on the data you are interested in.
 As explained next, it is extremely important to define the *library workspace* and the file containing your target genes (see *Initialization* section).
