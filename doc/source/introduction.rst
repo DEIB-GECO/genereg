@@ -12,7 +12,7 @@ The regulation system of each target gene is analyzed singularly and independent
 	
 	* **expression of candidate regulatory genes** (i.e. those genes encoding for transcription factors having binding sites located in the promoter regions of genes of interest).
 
-Methylation, gene expression and transcription factor data of interest are extracted from the `GMQL <http://gmql.eu/gmql-rest/>`_ system, using the Python library `PyGMQL <https://pygmql.readthedocs.io/en/latest/index.html>`_.
+Methylation, gene expression and transcription factor data of interest are extracted from the `GMQL <http://gmql.eu/gmql-rest/>`_ system repository, using the Python library `PyGMQL <https://pygmql.readthedocs.io/en/latest/index.html>`_.
 ENCODE and TCGA are the datasets currently available on GMQL for this type of data; so, this method can be used to investigate all the 33 types of cancer analyzed by TCGA:
 
 .. image:: images/tcgatumors.png
