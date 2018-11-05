@@ -8,7 +8,7 @@ The regulation system of each target gene is analyzed singularly and independent
 	
 	* **expression of the genes** belonging to the **same gene set** (e.g. pathway) as the target gene;
 	
-	* **expression of the genes** belonging to the **other gene sets** (e.g. pathways) with respect to the target gene;
+	* **expression of the genes** belonging to **other gene sets** (e.g. pathways) with respect to the target gene;
 	
 	* **expression of candidate regulatory genes** (i.e. those genes encoding for transcription factors having binding sites located in the promoter regions of genes of interest).
 
