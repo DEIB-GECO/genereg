@@ -39,7 +39,7 @@ The main phases that are performed during the complete execution of this library
 	
 	6) data analysis process (feature selection + linear regression).
 
-The next chapters of the documentation thoroughly explain the rational behind each phase and how it is executed.
+The next chapters of the documentation thoroughly explain the rationale behind each phase and how it is executed.
 
 |
 
