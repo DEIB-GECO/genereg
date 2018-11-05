@@ -4,7 +4,7 @@ As comprehensive information on human genes is available online through multiple
 
 ``genes_mapping()``
 
-	The GENES_MAPPING operation creates a mapping table for all the human genes (downloaded from HGNC), providing their current official Gene Symbols, their main IDs, and, if existing, the transcription factors they encode (with their corresponding UniProt IDs). The mapping table is returned as a Pandas dataframe and exported locally in the Excel file 'Genes Mapping.xlsx'.
+	The GENES_MAPPING operation creates a mapping table for all the human genes (downloaded from HGNC), providing their current official Gene Symbol, their main IDs, and, if existing, the transcription factors they encode (with their corresponding UniProt IDs). The mapping table is returned as a Pandas dataframe and exported locally in the Excel file 'Genes Mapping.xlsx'.
 	
 	**Return:** a Pandas dataframe
 	
@@ -18,7 +18,7 @@ As comprehensive information on human genes is available online through multiple
 		mapping_df = gr.GenesMapping.genes_mapping()
 
 
-Here it is a sample excerpt of the final GENEs-TFs mapping table:
+Here, it is a sample excerpt of the final GENEs-TFs mapping table:
 
 
 .. image:: images/mappingtable.png
