@@ -19,7 +19,7 @@ An additive approach is adopted, building five different data matrices for each 
 
 |
 
-Here it is the set of functions used to build the five data matrixes:
+Here it is the set of functions used to build the five data matrices:
 
 ``create_m1()``
 
@@ -40,7 +40,7 @@ Here it is the set of functions used to build the five data matrixes:
 
 ``create_m2()``
 
-	The CREATE_M2 operation builds the second data matrix for each target gene of interest, adding to the first matrix data about the expression of candidate regulatory genes of each gene of interest. One data matrix for each target gene is created and exported locally in as many Excel files as the considered genes; while the whole set of M2 matrixes is returned as a Python dictionary (dict_model_v2.p), where each target gene (set as key) is associated with a Pandas dataframe containing the data for its M2 matrix (set as value). 
+	The CREATE_M2 operation builds the second data matrix for each target gene of interest, adding to the first matrix data about the expression of candidate regulatory genes of each gene of interest. One data matrix for each target gene is created and exported locally in as many Excel files as the considered genes; while the whole set of M2 matrices is returned as a Python dictionary (dict_model_v2.p), where each target gene (set as key) is associated with a Pandas dataframe containing the data for its M2 matrix (set as value). 
 	
 	**Return:** a Python dictionary
 	
@@ -57,7 +57,7 @@ Here it is the set of functions used to build the five data matrixes:
 
 ``create_m3()``
 
-	The CREATE_M3 operation builds the third data matrix for each target gene of interest, adding to the second matrix data about the expression of candidate regulatory genes of genes of interest belonging to the same gene set of the target gene. One data matrix for each target gene is created and exported locally in as many Excel files as the considered genes; while the whole set of M3 matrixes is returned as a Python dictionary (dict_model_v3.p), where each target gene (set as key) is associated with a Pandas dataframe containing the data for its M3 matrix (set as value). 
+	The CREATE_M3 operation builds the third data matrix for each target gene of interest, adding to the second matrix data about the expression of candidate regulatory genes of genes of interest belonging to the same gene set of the target gene. One data matrix for each target gene is created and exported locally in as many Excel files as the considered genes; while the whole set of M3 matrices is returned as a Python dictionary (dict_model_v3.p), where each target gene (set as key) is associated with a Pandas dataframe containing the data for its M3 matrix (set as value). 
 	
 	**Return:** a Python dictionary
 	
@@ -74,7 +74,7 @@ Here it is the set of functions used to build the five data matrixes:
 
 ``create_m4()``
 
-	The CREATE_M4 operation builds the fourth data matrix for each target gene of interest, adding to the third matrix data about the expression of genes of interest belonging to the other gene sets with respect to the target gene. One data matrix for each target gene is created and exported locally in as many Excel files as the considered genes; while the whole set of M4 matrixes is returned as a Python dictionary (dict_model_v4.p), where each target gene (set as key) is associated with a Pandas dataframe containing the data for its M4 matrix (set as value). 
+	The CREATE_M4 operation builds the fourth data matrix for each target gene of interest, adding to the third matrix data about the expression of genes of interest belonging to the other gene sets with respect to the target gene. One data matrix for each target gene is created and exported locally in as many Excel files as the considered genes; while the whole set of M4 matrices is returned as a Python dictionary (dict_model_v4.p), where each target gene (set as key) is associated with a Pandas dataframe containing the data for its M4 matrix (set as value). 
 	
 	**Return:** a Python dictionary
 	
@@ -91,7 +91,7 @@ Here it is the set of functions used to build the five data matrixes:
 
 ``create_m5()``
 
-	The CREATE_M5 operation builds the fifth data matrix for each target gene of interest, adding to the fourth matrix data about the expression of candidate regulatory genes of genes of interest belonging to the other gene sets with respect to the target gene. One data matrix for each target gene is created and exported locally in as many Excel files as the considered genes; while the whole set of M5 matrixes is returned as a Python dictionary (dict_model_v5.p), where each target gene (set as key) is associated with a Pandas dataframe containing the data for its M5 matrix (set as value).
+	The CREATE_M5 operation builds the fifth data matrix for each target gene of interest, adding to the fourth matrix data about the expression of candidate regulatory genes of genes of interest belonging to the other gene sets with respect to the target gene. One data matrix for each target gene is created and exported locally in as many Excel files as the considered genes; while the whole set of M5 matrices is returned as a Python dictionary (dict_model_v5.p), where each target gene (set as key) is associated with a Pandas dataframe containing the data for its M5 matrix (set as value).
 	
 	**Return:** a Python dictionary
 	
