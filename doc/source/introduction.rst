@@ -35,7 +35,7 @@ The main phases that are performed during the complete execution of this library
 	
 	4) extraction of the expression values of each target gene (from TCGA data sample collecting information on patients affected by the tumor of interest);
 	
-	5) extracted data manipulation and storage into data matrixes to be used as inputs for the following data analysis;
+	5) extracted data manipulation and storage into data matrices to be used as inputs for the following data analysis;
 	
 	6) data analysis process (feature selection + linear regression).
 
@@ -62,7 +62,7 @@ You can see here a sample Python script for using the library::
 	methyl_df = gr.Methylation.extract_methylation(tumor='Ovarian Serous Cystadenocarcinoma', platform=27, gencode_version=22, methyl_upstream=4000, methyl_downstream=1000)
 	expr_df1, expr_df2 = gr.GeneExpression.extract_expression(tumor='Ovarian Serous Cystadenocarcinoma', platform=27, gencode_version=22)
 	
-	# Data Matrixes
+	# Data Matrices
 	m1_dict = gr.DataMatrixes.create_m1()
 	m2_dict = gr.DataMatrixes.create_m2()
 	m3_dict = gr.DataMatrixes.create_m3()
