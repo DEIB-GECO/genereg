@@ -22,7 +22,7 @@ Extraction of Transcription Factors
 	
 	* *cell_lines*: a list of strings containing the names of the cell lines to analyze (it is possible to consider data from 1 up to 3 cell lines at the same time)
 	
-	* *gencode_version*: number representing the GENCODE genomic annotations to use (currently, for assembly GRCh38, versions 22, 24 and 27 are loaded in the GMQL system and can be used in this library. As soon as new versions are available in the system, you will be able to use them in this function)
+	* *gencode_version*: number representing the GENCODE genomic annotations to use (currently, for assembly GRCh38, versions 22, 24 and 27 are available in the GMQL system and can be used in this library. As soon as new versions are available in the system, you will be able to use them in this function)
 	
 	**Return:** a Python dictionary
 	
