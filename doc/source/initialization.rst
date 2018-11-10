@@ -23,8 +23,6 @@ Here, it is how this list of genes has to be structured:
 
 The library supoorts also genes belonging to multiple gene sets: in this case you have to insert in the Excel file multiple rows for that specific gene, one for each gene set it belongs to.
 
-|
-
 An example of this file can be downloaded `here <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/Genes_of_Interest.xlsx>`_. In this case, three different gene sets are analyzed, representing three genomic pathways relevant for the *Ovarian Serous Cystadenocarcinoma*. Each target gene belongs to a specific pathway according to the biological functions it is involved in. As already specified above, the library also supports genes belonging to more than one pathway.
 
 |

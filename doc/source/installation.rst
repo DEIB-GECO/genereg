@@ -6,9 +6,8 @@ Prerequisites
 -------------
 
 Python (version >= 3.6) is required.
-The library is currently tested for running on Windows. Portability on other OS (iOS and Linux) is being tested.
 
-|
+The library is currently tested for running on Windows. Portability on other OS (iOS and Linux) is being tested.
 
 **PyGMQL** package is required. Follow the instructions at this `link <https://github.com/DEIB-GECO/PyGMQL>`_
 to install it and to known more about it.
