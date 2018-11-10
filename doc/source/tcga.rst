@@ -33,7 +33,7 @@ Extraction of Methylation values
 	
 	**INPUT FILES:** Genes_of_Interest.xlsx from *./*
 	
-	**OUTPUT_FILES:** `Methylation_Values.xlsx <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/Methylation_Values.xlsx>`_ in *./3_TCGA_Data/Methylation/*, `Common_Aliquots.txt <https://raw.githubusercontent.com/Kia23/genereg/master/DATA/sample_files/Common_Aliquots.txt>`_ in *./3_TCGA_Data/*, `dict_test_split.p <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/dict_test_split.p>`_ in *./5_Data_Analysis/* (click on the files to download an example)
+	**OUTPUT_FILES:** `Methylation_Values.xlsx <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/Methylation_Values.xlsx>`_ in *./3_TCGA_Data/Methylation/*, `Common_Aliquots.txt <https://raw.githubusercontent.com/Kia23/genereg/master/DATA/sample_files/Common_Aliquots.txt>`_ in *./3_TCGA_Data/*, `dict_test_split.p <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/dict_test_split.p>`_ in *./5_Data_Analysis/* (click on the file names to download an example)
 	
 	Example::
 
@@ -74,7 +74,7 @@ Extraction of Gene Expression values
 	
 	**INPUT FILES:** Genes_of_Interest.xlsx from *./*, dict_RegulGenes.p from *./2_Regulatory_Genes/*, Genes_Mapping.xlsx from *./0_Genes_Mapping/*
 	
-	**OUTPUT_FILES:** `Gene_Expression-InterestGenes.xlsx <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/Gene_Expression-InterestGenes.xlsx>`_, `Gene_Expression-RegulatoryGenes.xlsx <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/Gene_Expression-RegulatoryGenes.xlsx>`_ in *./3_TCGA_Data/Gene_Expression/* (click on the files to download an example)
+	**OUTPUT_FILES:** `Gene_Expression-InterestGenes.xlsx <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/Gene_Expression-InterestGenes.xlsx>`_, `Gene_Expression-RegulatoryGenes.xlsx <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/Gene_Expression-RegulatoryGenes.xlsx>`_ in *./3_TCGA_Data/Gene_Expression/* (click on the file names to download an example)
 	
 	Example::
 
