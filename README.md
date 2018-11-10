@@ -1,7 +1,7 @@
 # genereg
 
 [![Documentation Status](https://readthedocs.org/projects/genereg/badge/?version=latest)](https://genereg.readthedocs.io/en/latest/?badge=latest)
-[![PyPI version](https://badge.fury.io/py/genereg.svg)](https://badge.fury.io/py/genereg)
+[![PyPI version](https://img.shields.io/badge/pypi%20package-0.0.9-brightgreen.svg)](https://pypi.org/project/genereg/0.0.9/)
 [![PyPI - Python Version](https://img.shields.io/badge/python-3.6-blue.svg)](https://github.com/Kia23/genereg)
 
 
