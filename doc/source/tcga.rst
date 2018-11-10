@@ -15,7 +15,7 @@ Extraction of Methylation values
 
 ``extract_methylation(tumor, platform, gencode_version, methyl_upstream, methyl_downstream)``
 
-	The EXTRACT_METHYLATION operation extracts methylation values from TCGA for all the genes of interest. For each gene of interest, the mean value of all the beta_values associated with methylation sites that are localized within areas -methyl_upstream/+methyl_downstream bases from any of its TSSs are retrieved. Intermediate result files are exported locally during the execution of the function, while the final dataframe is returned as a Pandas dataframe and exported locally in the Excel file 'Methylation Values.xlsx'.
+	The EXTRACT_METHYLATION operation extracts methylation values from TCGA for all the genes of interest. For each gene of interest, the mean value of all the beta_values associated with methylation sites that are localized within areas -methyl_upstream/+methyl_downstream bases from any of its TSSs are retrieved. Intermediate result files are exported locally during the execution of the function, while the final dataframe is returned as a Pandas dataframe and exported locally in the Excel file 'Methylation_Values.xlsx'.
 	
 	**Parameters:**
 	
@@ -23,7 +23,7 @@ Extraction of Methylation values
 	
 	* *platform*: number identifying the sequencing platform (either 27 for the 27k probes sequencing platform or 450 for the 450k probes sequencing platform)
 	
-	* *gencode_version*: number representing the version of the GENCODE genomic annotations to use (currently, for assembly GRCh38, versions 22, 24 and 27 are loaded in the GMQL system and can be used in this library. As soon as new versions are available in the system, you will be able to use them in this function)
+	* *gencode_version*: number representing the version of the GENCODE genomic annotations to use (currently, for assembly GRCh38, versions 22, 24 and 27 are available in the GMQL system and can be used in this library. As soon as new versions are available in the system, you will be able to use them in this function)
 	
 	* *methyl_upstream*: number of bases upstream each gene TSS to consider for the extraction of methylation sites of interest
 	
@@ -60,7 +60,7 @@ Extraction of Gene Expression values
 
 ``extract_expression(tumor, platform, gencode_version)``
 
-	The EXTRACT_EXPRESSION operation extracts expression values from TCGA for all the genes of interest and their candidate regulatory genes. Intermediate result files are exported locally during the execution of the function, while the final dataframes are returned as Pandas dataframes and exported locally in the Excel files 'Gene Expression - InterestGenes.xlsx' and 'Gene Expression - RegulatoryGenes.xlsx'.
+	The EXTRACT_EXPRESSION operation extracts expression values from TCGA for all the genes of interest and their candidate regulatory genes. Intermediate result files are exported locally during the execution of the function, while the final dataframes are returned as Pandas dataframes and exported locally in the Excel files 'Gene_Expression-InterestGenes.xlsx' and 'Gene_Expression-RegulatoryGenes.xlsx'.
 	
 	**Parameters:**
 	
@@ -68,7 +68,7 @@ Extraction of Gene Expression values
 	
 	* *platform*: number identifying the sequencing platform (either 27 for the 27k probes sequencing platform or 450 for the 450k probes sequencing platform)
 	
-	* *gencode_version*: number representing the version of the GENCODE genomic annotations to use (currently, for assembly GRCh38, versions 22, 24 and 27 are loaded in the GMQL system and can be used in this library. As soon as new versions are available in the system, you will be able to use them in this function)
+	* *gencode_version*: number representing the version of the GENCODE genomic annotations to use (currently, for assembly GRCh38, versions 22, 24 and 27 are available in the GMQL system and can be used in this library. As soon as new versions are available in the system, you will be able to use them in this function)
 	
 	**Return:** two Pandas dataframes
 	
