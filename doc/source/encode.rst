@@ -28,7 +28,7 @@ Extraction of Transcription Factors
 	
 	**INPUT FILES:** Genes_of_Interest.xlsx from *./*
 	
-	**OUTPUT_FILES:** `dict_GeneTF.p <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/dict_GeneTF.p>`_, `dict_GeneTF.xlsx <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/dict_GeneTF.xlsx>`_, `dict_GeneTF.txt <https://raw.githubusercontent.com/Kia23/genereg/master/DATA/sample_files/dict_GeneTF.txt>`_ in *./1_Transcription_Factors/* (click on the files to download an example)
+	**OUTPUT_FILES:** `dict_GeneTF.p <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/dict_GeneTF.p>`_, `dict_GeneTF.xlsx <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/dict_GeneTF.xlsx>`_, `dict_GeneTF.txt <https://raw.githubusercontent.com/Kia23/genereg/master/DATA/sample_files/dict_GeneTF.txt>`_ in *./1_Transcription_Factors/* (click on the file names to download an example)
 	
 	Example::
 
@@ -49,7 +49,7 @@ Identification of Regulatory Genes
 	
 	**INPUT FILES:** Genes_Mapping.xlsx from *./0_Genes_Mapping/*, dict_GeneTF.p from *./1_Transcription_Factors/*
 	
-	**OUTPUT_FILES:** `dict_RegulGenes.p <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/dict_RegulGenes.p>`_, `dict_RegulGenes.xlsx <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/dict_RegulGenes.xlsx>`_, `dict_RegulGenes.txt <https://raw.githubusercontent.com/Kia23/genereg/master/DATA/sample_files/dict_RegulGenes.txt>`_, `Full_TFs-RegulatoryGenes_SUMMARY_Table.xlsx <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/Full_TFs-RegulatoryGenes_SUMMARY_Table.xlsx>`_ in *./2_Regulatory_Genes/* (click on the files to download an example)
+	**OUTPUT_FILES:** `dict_RegulGenes.p <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/dict_RegulGenes.p>`_, `dict_RegulGenes.xlsx <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/dict_RegulGenes.xlsx>`_, `dict_RegulGenes.txt <https://raw.githubusercontent.com/Kia23/genereg/master/DATA/sample_files/dict_RegulGenes.txt>`_, `Full_TFs-RegulatoryGenes_SUMMARY_Table.xlsx <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/Full_TFs-RegulatoryGenes_SUMMARY_Table.xlsx>`_ in *./2_Regulatory_Genes/* (click on the file names to download an example)
 	
 	Example::
 
