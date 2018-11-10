@@ -10,8 +10,8 @@ As comprehensive information on human genes is available online through multiple
 	
 	**INPUT FILES:** ENCODE.tsv, UNIPROT.tsv, HGNC.tsv from *./0_Genes_Mapping/DATA/*
 	
-	**OUTPUT_FILES:** `Genes_Mapping.xlsx <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/Genes_Mapping.xlsx>` in *./0_Genes_Mapping/* (click on the file name to download an example)
-	
+	**OUTPUT_FILES:** `Genes_Mapping.xlsx <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/Genes_Mapping.xlsx>`_ in *./0_Genes_Mapping/* (click on the file name to download an example)
+
 	Example::
 
 		import genereg as gr
