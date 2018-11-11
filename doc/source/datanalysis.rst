@@ -56,7 +56,7 @@ The set of functions used to perform the analysis is the following:
 	
 	**INPUT FILES:** Genes_of_Interest.xlsx from *./*, data matrices (Gene_ID_[SYMBOL]_(gene_set)-Model_v....xlsx) from *./4_Data_Matrix_Construction/Model.../*
 	
-	**OUTPUT_FILES:** `Features-Gene_ID_[SYMBOL].txt <https://raw.githubusercontent.com/Kia23/genereg/master/DATA/sample_files/Features-Gene_672_%5BBRCA1%5D.txt>`_, `Feature_Selection_SUMMARY.xlsx <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/Feature_Selection_SUMMARY.xlsx>`_ in *./5_Data_Analysis/.../FeatureSelection/M.../'* (click on the files to download an example)
+	**OUTPUT_FILES:** `Features-Gene_ID_[SYMBOL].txt <https://raw.githubusercontent.com/Kia23/genereg/master/DATA/sample_files/Features-Gene_672_%5BBRCA1%5D.txt>`_, `Feature_Selection_SUMMARY.xlsx <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/Feature_Selection_SUMMARY.xlsx>`_ in *./5_Data_Analysis/.../FeatureSelection/M.../'* (click on the file names to download an example)
 	
 	Example::
 
@@ -81,7 +81,7 @@ The set of functions used to perform the analysis is the following:
 	
 	**INPUT FILES:** Genes_of_Interest.xlsx from *./*, data matrices (Gene_ID_[SYMBOL]_(gene_set)-Model_v....xlsx) from *./4_Data_Matrix_Construction/Model.../*, features selected (Features-Gene_ID_[SYMBOL].txt) from *./5_Data_Analysis/.../FeatureSelection/M.../*
 	
-	**OUTPUT_FILES:** `LinReg_Summary-Gene_ID_[SYMBOL].txt <https://raw.githubusercontent.com/Kia23/genereg/master/DATA/sample_files/LinReg_Summary-Gene_672_%5BBRCA1%5D.txt>`_ in *./5_Data_Analysis/.../LinearRegression/M.../*, `Coefficients_(model)-Gene_ID_[SYMBOL].xlsx <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/Coefficients_(M3)-Gene_672_%5BBRCA1%5D.xlsx>`_ in *./5_Data_Analysis/.../LinearRegression/M.../Coefficients/*, `Confidence_Intervals_(model)-Gene_ID_[SYMBOL].xlsx <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/Confidence_Intervals_(M3)-Gene_672_%5BBRCA1%5D.xlsx>`_ in *./5_Data_Analysis/.../LinearRegression/M.../Confidence Intervals/*, `Correlation_Matrix_(model)-Gene_ID_[SYMBOL].xlsx <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/Correlation_Matrix_(M3)-Gene_672_%5BBRCA1%5D.xlsx>`_ in *./5_Data_Analysis/.../LinearRegression/M.../Correlation Matrix/*, `Linear_Regression_R2_SCORES.xlsx <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/Linear_Regression_R2_SCORES.xlsx>`_ in *./5_Data_Analysis/.../LinearRegression/M.../* (click on the files to download an example)
+	**OUTPUT_FILES:** `LinReg_Summary-Gene_ID_[SYMBOL].txt <https://raw.githubusercontent.com/Kia23/genereg/master/DATA/sample_files/LinReg_Summary-Gene_672_%5BBRCA1%5D.txt>`_ in *./5_Data_Analysis/.../LinearRegression/M.../*, `Coefficients_(model)-Gene_ID_[SYMBOL].xlsx <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/Coefficients_(M3)-Gene_672_%5BBRCA1%5D.xlsx>`_ in *./5_Data_Analysis/.../LinearRegression/M.../Coefficients/*, `Confidence_Intervals_(model)-Gene_ID_[SYMBOL].xlsx <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/Confidence_Intervals_(M3)-Gene_672_%5BBRCA1%5D.xlsx>`_ in *./5_Data_Analysis/.../LinearRegression/M.../Confidence Intervals/*, `Correlation_Matrix_(model)-Gene_ID_[SYMBOL].xlsx <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/Correlation_Matrix_(M3)-Gene_672_%5BBRCA1%5D.xlsx>`_ in *./5_Data_Analysis/.../LinearRegression/M.../Correlation Matrix/*, `Linear_Regression_R2_SCORES.xlsx <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/Linear_Regression_R2_SCORES.xlsx>`_ in *./5_Data_Analysis/.../LinearRegression/M.../* (click on the file names to download an example)
 	
 	Example::
 
@@ -106,7 +106,7 @@ The set of functions used to perform the analysis is the following:
 	
 	**INPUT FILES:** Genes_of_Interest.xlsx from *./*, dict_RegulGenes.p from *./2_Regulatory_Genes/*, data matrices (Gene_ID_[SYMBOL]_(gene_set)-Model_v....xlsx) from *./4_Data_Matrix_Construction/Model.../*, Feature_Selection_SUMMARY.xlsx from *./5_Data_Analysis/.../FeatureSelection/M.../*, Linear_Regression_R2_SCORES.xlsx from *./5_Data_Analysis/.../LinearRegression/M.../*
 	
-	**OUTPUT_FILES:** `Feature_Selection_and_Linear_Regression.xlsx <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/Feature_Selection_and_Linear_Regression.xlsx>`_, `Relevant_Features-Gene_ID_[SYMBOL].xlsx <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/Relevant_Features-Gene_672_%5BBRCA1%5D.xlsx>`_, `Order_of_Features_Selected.xlsx <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/Order_of_Features_Selected.xlsx>`_ in *./5_Data_Analysis/.../* (click on the files to download an example)
+	**OUTPUT_FILES:** `Feature_Selection_and_Linear_Regression.xlsx <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/Feature_Selection_and_Linear_Regression.xlsx>`_, `Relevant_Features-Gene_ID_[SYMBOL].xlsx <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/Relevant_Features-Gene_672_%5BBRCA1%5D.xlsx>`_, `Order_of_Features_Selected.xlsx <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/Order_of_Features_Selected.xlsx>`_ in *./5_Data_Analysis/.../* (click on the file names to download an example)
 	
 	Example::
 
@@ -129,7 +129,7 @@ The set of functions used to perform the analysis is the following:
 	
 	**INPUT FILES:** Genes_of_Interest.xlsx from *./*, Feature_Selection_and_Linear_Regression.xlsx from *./5_Data_Analysis/.../*
 	
-	**OUTPUT_FILES:** `R2_and_Adj.R2_Scores.xlsx <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/R2_and_Adj.R2_Scores.xlsx>`_ in *./5_Data_Analysis/.../* (click on the file to download an example)
+	**OUTPUT_FILES:** `R2_and_Adj.R2_Scores.xlsx <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/R2_and_Adj.R2_Scores.xlsx>`_ in *./5_Data_Analysis/.../* (click on the file name to download an example)
 	
 	Example::
 
@@ -148,7 +148,7 @@ The set of functions used to perform the analysis is the following:
 	
 	**INPUT FILES:** Genes_of_Interest.xlsx from *./*, R2_and_Adj.R2_Scores.xlsx from *./5_Data_Analysis/.../*
 	
-	**OUTPUT_FILES:** `Best_Genes.xlsx <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/Best_Genes.xlsx>`_ in *./5_Data_Analysis/.../* (click on the file to download an example)
+	**OUTPUT_FILES:** `Best_Genes.xlsx <https://github.com/Kia23/genereg/raw/master/DATA/sample_files/Best_Genes.xlsx>`_ in *./5_Data_Analysis/.../* (click on the file name to download an example)
 	
 	Example::
 
