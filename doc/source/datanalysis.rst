@@ -44,7 +44,7 @@ The set of functions used to perform the analysis is the following:
 
 ``feature_selection(gene_set, n_data_matrix, type)``
 
-	The FEATURE_SELECTION operation executes the feature selection procedure per gene set and per data matrix, according to the specified type of selection: it takes as input the name of the gene set to consider and the number of the model to build (i.e., the number of the data matrix to consider) and performs the specified feature selection for all the genes of interest in the selected set. Results are exported locally in Excel and text files.
+	The FEATURE_SELECTION operation executes the feature selection procedure per gene set and per data matrix, according to the specified type of selection. It takes as input the name of the gene set to consider and the number of the model to build (i.e., the number of the data matrix to consider) and performs the specified feature selection for all the genes of interest in the selected set. Results are exported locally in Excel and text files.
 	
 	**Parameters:**
 	
