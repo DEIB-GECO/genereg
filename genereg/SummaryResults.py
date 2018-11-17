@@ -143,10 +143,10 @@ def summarize_reg(gene_set, n_data_matrix):
 		coeff_df = pd.read_excel('./5_Data_Analysis/'+gene_set+'/LinearRegression/M'+model+'/Coefficients/Coefficients_(M'+model+')-Gene_'+gene_ID+'_['+current_gene+'].xlsx',sheetname='Sheet1',header=0)
 
 		# Import the confidence intervals
-		ci_df = pd.read_excel('./5_Data_Analysis/'+gene_set+'/LinearRegression/M'+model+'/Confidence Intervals/Confidence_Intervals_(M'+model+')-Gene_'+gene_ID+'_['+current_gene+'].xlsx',sheetname='Sheet1',header=0)
+		ci_df = pd.read_excel('./5_Data_Analysis/'+gene_set+'/LinearRegression/M'+model+'/ConfidenceIntervals/Confidence_Intervals_(M'+model+')-Gene_'+gene_ID+'_['+current_gene+'].xlsx',sheetname='Sheet1',header=0)
 		
 		# Import the correlation matrix
-		corr_df = pd.read_excel('./5_Data_Analysis/'+gene_set+'/LinearRegression/M'+model+'/Correlation Matrix/Correlation_Matrix_(M'+model+')-Gene_'+gene_ID+'_['+current_gene+'].xlsx',sheetname='Sheet1',header=0)
+		corr_df = pd.read_excel('./5_Data_Analysis/'+gene_set+'/LinearRegression/M'+model+'/CorrelationMatrix/Correlation_Matrix_(M'+model+')-Gene_'+gene_ID+'_['+current_gene+'].xlsx',sheetname='Sheet1',header=0)
 		
 		# Select the relevant features on the basis of the confidence intervals (i.e. if the confidence interval does not contain 0, then the feature is significant for the model)
 		relevant_features = []

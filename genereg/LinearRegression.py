@@ -148,7 +148,7 @@ def linear_regression(gene_set, n_data_matrix):
 				p = row['p-value']
 				CI_df.set_value(feature_gene,'P',p)  
 		
-			ci_path = './5_Data_Analysis/'+gene_set+'/LinearRegression/M'+model+'/Confidence Intervals/'
+			ci_path = './5_Data_Analysis/'+gene_set+'/LinearRegression/M'+model+'/ConfidenceIntervals/'
 			writer = ExcelWriter(ci_path+'Confidence_Intervals_(M'+model+')-Gene_'+gene_ID+'_['+current_gene+'].xlsx')
 			CI_df.to_excel(writer,'Sheet1')
 			writer.save()
@@ -161,7 +161,7 @@ def linear_regression(gene_set, n_data_matrix):
 				cols_for_correlation = ['EXPRESSION ('+current_gene+')','METHYLATION ('+current_gene+')']+features_sel
 				model_gene_df_corr = original_model_gene_df[cols_for_correlation].copy()
 			corr_matrix = model_gene_df_corr.corr()    
-			corr_path = './5_Data_Analysis/'+gene_set+'/LinearRegression/M'+model+'/Correlation Matrix/'
+			corr_path = './5_Data_Analysis/'+gene_set+'/LinearRegression/M'+model+'/CorrelationMatrix/'
 			writer = ExcelWriter(corr_path+'Correlation_Matrix_(M'+model+')-Gene_'+gene_ID+'_['+current_gene+'].xlsx')
 			corr_matrix.to_excel(writer,'Sheet1')
 			writer.save()

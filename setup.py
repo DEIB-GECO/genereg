@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="genereg",
-    version="0.0.9",
+    version="0.1.0",
     author="Kia23",
     author_email="kia34.r18.dev@gmail.com",
     description="A library for analyzing the regulation systems of target genes belonging to genomic pathways relevant for a specific cancer type.",

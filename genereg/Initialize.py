@@ -125,8 +125,8 @@ def library_init():
 		for model in model_names:
 			additional_dirs = []
 			elem_1 = './5_Data_Analysis/'+s+'/LinearRegression/'+model+'/Coefficients'
-			elem_2 = './5_Data_Analysis/'+s+'/LinearRegression/'+model+'/Confidence Intervals'
-			elem_3 = './5_Data_Analysis/'+s+'/LinearRegression/'+model+'/Correlation Matrix'
+			elem_2 = './5_Data_Analysis/'+s+'/LinearRegression/'+model+'/ConfidenceIntervals'
+			elem_3 = './5_Data_Analysis/'+s+'/LinearRegression/'+model+'/CorrelationMatrix'
 			additional_dirs.append(elem_1)
 			additional_dirs.append(elem_2)
 			additional_dirs.append(elem_3)
