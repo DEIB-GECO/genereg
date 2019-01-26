@@ -14,7 +14,11 @@ Each model is built subsequently executing the following two steps:
 			
 			* a complete method (**type='all'**) which implements the forward feature selection considering all the features in the current matrix, regardless of the features selected in the previous step. This method allows analyzing all the potential regulatory features all together, without any previous pre-selection process (e.g. in particular this can be useful if applied to M5, which contains the whole set of candidate regulatory features). However, pay attention to this type of selection process, because the computational complexity will inevitably increase, in case greatly.
 
-		* **Lasso** (**type='lasso'**) with features re-evalutation, where the features selected are the ones with a coefficient different from zero, according to the Lasso algorithm, selecting the best tuning parameter *alpha*. In particulat, a LASSO regression with multiple possible alpha values is executed and, as a result, the best alpha value is identified; finally, the LASSO regression is performed according to the selected *alpha*, in order to extract the most relevant features.
+		* **Lasso**, where the features selected are the ones with a coefficient different from zero, according to the Lasso algorithm, selecting the best tuning parameter *alpha*. In particulat, a LASSO regression with multiple possible alpha values is executed and, as a result, the best alpha value is identified; finally, the LASSO regression is performed according to the selected *alpha*, in order to extract the most relevant features. Two different methods are available in the library:
+		
+			* a method with features re-evalutation (**type='lasso'**), which implements the lasso feature selection considering in each step (i.e. for each data matrix) only the features extracted as most relevant in the previous step and re-evaluating them with all the new features in the current matrix in a new feature selection process;
+			
+			* a complete method (**type='lasso_all'**) which implements the lasso feature selection considering all the features in the current matrix, regardless of the features selected in the previous step. In a similar way as the FFS, this method allows analyzing all the potential regulatory features all together, (in particular if applied to M5, which contains the whole set of candidate regulatory features). Differently from the FFS, lasso guarantees a very low computational complexity, even if analyzing the whole set of features.
 
 |
 
@@ -52,7 +56,7 @@ The set of functions used to perform the analysis is the following:
 	
 	* *n_data_matrix*: number identifying the data matrix to analyze (only 2, 3 and 5 values are permitted)
 	
-	* *type*: the type of feature selection to perform (possible values are {'ffs_default', 'ffs_no_reval', 'lasso', 'all'})
+	* *type*: the type of feature selection to perform (possible values are {'ffs_default', 'ffs_no_reval', 'all', 'lasso', 'lasso_all'})
 	
 	**INPUT FILES:** Genes_of_Interest.xlsx from *./*, data matrices (Gene_ID_[SYMBOL]_(gene_set)-Model_v....xlsx) from *./4_Data_Matrix_Construction/Model.../*
 	

@@ -18,7 +18,7 @@ def feature_selection(gene_set, n_data_matrix, type):
 
 	:param gene_set: the set of genes of interest to analyze
 	:param n_data_matrix: number identifying the data matrix to analyze (only 2,3 and 5 values are permitted)
-	:param type: the type of feature selection to perform (possibile values are {'ffs_default','ffs_no_reval','lasso','all'})
+	:param type: the type of feature selection to perform (possibile values are {'ffs_default','ffs_no_reval','all','lasso','lasso_all'})
 	
 	Example::
 	
@@ -530,10 +530,12 @@ def feature_selection(gene_set, n_data_matrix, type):
 		writer.save()
 		
 	
-	elif (type == 'lasso'):
+	elif (type == 'lasso') or (type == 'lasso_all'):
 	
 		# Create a dataframe to store results of feature selection for each gene
-		if model == '2':
+		if (type == 'lasso') and (model == '2'):
+			summary_results_df = pd.DataFrame(index=SYMs_current_pathway, columns=['TOT Inital N° Features','Discarded Features','N° Features Selected'])
+		elif (type == 'lasso_all'):
 			summary_results_df = pd.DataFrame(index=SYMs_current_pathway, columns=['TOT Inital N° Features','Discarded Features','N° Features Selected'])
 		else:
 			summary_results_df = pd.DataFrame(index=SYMs_current_pathway, columns=['TOT Inital N° Features','Discarded Features','Features Available for Selection','N° Features Selected'])
@@ -561,7 +563,7 @@ def feature_selection(gene_set, n_data_matrix, type):
 			summary_results_df.set_value(current_gene, 'Discarded Features', n_discarded_features)     
 			
 			
-			if (model == '3') or (model == '5'):
+			if (type == 'lasso') and ((model == '3') or (model == '5')):
 				# Load the list of features selected for the previous model
 				if model == '3':
 					previous_model = str(int(model)-1)
