@@ -9,3 +9,6 @@ This library implements a method for analyzing the regulation systems of target 
 The regulation system of each target gene is analyzed singularly and independently, by assessing the effect of multiple regulatory factors on its expression, such as its methylation, the expression of other genes or the effect of transcription factors.
 
 The full documentation can be found at the following link: https://genereg.readthedocs.io
+
+We specifically applied our method to Ovarian Serous Cystadenocarcinoma, to investigate the regulatory system of 377 target genes belonging to 3 genomic pathways (DNA_REPAIR, STEM_CELLS, GLUCOSE_METABOLISM) relevant for this type of OV cancer. 
+Results are graphically represented through expression networks, grouping target genes in subclasses according to their function inside their pathway. The complete networks file is available in the "OV Cancer Results" folder with its original Cytoscape format.
